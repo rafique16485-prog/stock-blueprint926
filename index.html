@@ -37,11 +37,11 @@ button,input,select{font:inherit}button{cursor:pointer}
 </head>
 <body>
 <div class="app">
-<header class="header"><div class="logo">📊 Stock Blueprint</div><button class="demo" onclick="openDataModal()">DEMO DATA • CONNECT</button></header>
+<header class="header"><div class="logo">📊 Stock Blueprint</div><button id="dataBadge" class="demo" onclick="openDataModal()">DATA: UPSTOX • CONNECT</button></header>
 <section class="market"><div class="market-grid">
-<div class="market-card"><small>NIFTY 50</small><div class="market-price">25,680</div><small class="up">▲ +0.42%</small></div>
-<div class="market-card"><small>BANK NIFTY</small><div class="market-price">57,420</div><small class="up">▲ +0.31%</small></div>
-<div class="market-card"><small>INDIA VIX</small><div class="market-price">13.80</div><small>Normal</small></div>
+<div class="market-card"><small>NIFTY 50</small><div id="niftyPrice" class="market-price">—</div><small id="niftyChange">Connecting…</small></div>
+<div class="market-card"><small>BANK NIFTY</small><div id="bankPrice" class="market-price">—</div><small id="bankChange">Connecting…</small></div>
+<div class="market-card"><small>INDIA VIX</small><div id="vixPrice" class="market-price">—</div><small id="vixState">Connecting…</small></div>
 </div></section>
 <div class="regime"><div class="regime-title">MARKET REGIME</div><div class="regime-main"><div class="regime-value">🟢 BULLISH</div><div class="regime-score">78/100</div></div></div>
 
@@ -56,11 +56,11 @@ button,input,select{font:inherit}button{cursor:pointer}
 </main>
 
 <main id="scanner" class="page">
-<section class="section"><div class="section-title">🔎 Stock Scanner</div><div class="section-subtitle">Demo engine • multi-factor setup scoring</div>
+<section class="section"><div class="section-title">🔎 Stock Scanner</div><div id="scannerStatus" class="section-subtitle">Upstox live • 5m confirmation • price action + volume</div>
 <div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="searchStocks()">SCAN</button></div>
 <div class="control-label">Trading style</div><div class="controls"><button class="chip active" onclick="setScanMode(this,'all')">All</button><button class="chip" onclick="setScanMode(this,'scalping')">Scalping</button><button class="chip" onclick="setScanMode(this,'intraday')">Intraday</button><button class="chip" onclick="setScanMode(this,'swing')">Swing</button><button class="chip" onclick="setScanMode(this,'positional')">Positional</button></div>
 <div class="control-label">Timeframe</div><div class="controls"><button class="chip tf-chip active" onclick="setTF(this,'5m')">5m</button><button class="chip tf-chip" onclick="setTF(this,'15m')">15m</button><button class="chip tf-chip" onclick="setTF(this,'1H')">1H</button><button class="chip tf-chip" onclick="setTF(this,'4H')">4H</button><button class="chip tf-chip" onclick="setTF(this,'1D')">1D</button><button class="chip tf-chip" onclick="setTF(this,'1W')">1W</button></div>
-<div class="scanner-summary"><span>Eligible setups</span><b id="scanCount">4</b><span id="scanTF">5m • All</span></div>
+<div class="scanner-summary"><span>Live setups</span><b id="scanCount">—</b><span id="scanTF">5m • All</span></div>
 <div id="scannerList">
 <div class="scanner-card" data-stock="RELIANCE" data-signal="strong" data-mode="swing" onclick="openSetup('RELIANCE')"><div class="scanner-top"><div><div class="scanner-symbol">RELIANCE</div><div class="scanner-price">₹1,520 • Swing</div></div><div class="signal signal-long">STRONG 87</div></div><div class="scanner-grid"><div class="scanner-metric"><small>PA</small><b class="pass">PASS</b></div><div class="scanner-metric"><small>LIQUIDITY</small><b class="pass">SWEEP</b></div><div class="scanner-metric"><small>BOS</small><b class="pass">PASS</b></div><div class="scanner-metric"><small>RR</small><b class="pass">2.4</b></div></div><div class="scan-score"><i style="width:87%"></i></div><div class="scan-note">Trend aligned • liquidity swept • BOS confirmed • resistance nearby</div></div>
 <div class="scanner-card" data-stock="HDFCBANK" data-signal="watch" data-mode="swing" onclick="openSetup('HDFCBANK')"><div class="scanner-top"><div><div class="scanner-symbol">HDFCBANK</div><div class="scanner-price">₹1,690 • Swing</div></div><div class="signal signal-watch">WATCH 81</div></div><div class="scanner-grid"><div class="scanner-metric"><small>PA</small><b class="pass">PASS</b></div><div class="scanner-metric"><small>LIQUIDITY</small><b class="pass">SWEEP</b></div><div class="scanner-metric"><small>BOS</small><b class="watch">WAIT</b></div><div class="scanner-metric"><small>RR</small><b class="pass">2.1</b></div></div><div class="scan-score"><i style="width:81%"></i></div><div class="scan-note">Demand + liquidity positive • wait for structure confirmation</div></div>
@@ -137,7 +137,7 @@ HDFCBANK:{price:'₹1,690',sl:'₹1,655',t1:'₹1,765',rr:'1:2.1',score:'81/100'
 TCS:{price:'₹3,420',sl:'₹3,390',t1:'₹3,480',rr:'1:2.0',score:'54/100',type:'Weak Price Action • Intraday',status:'No clear confirmation',mode:'Intraday'},
 ICICIBANK:{price:'₹1,260',sl:'₹1,245',t1:'₹1,295',rr:'1:2.3',score:'76/100',type:'Higher Low • Intraday',status:'Momentum + Structure',mode:'Intraday'}
 };
-let scanMode='all',scanTF='5m';
+let scanMode='all',scanTF='5m',liveRows=[],liveSetups={};
 
 function openDataModal(){document.getElementById('dataModal').classList.add('show')}
 function closeDataModal(e){if(e&&e.target!==document.getElementById('dataModal'))return;document.getElementById('dataModal').classList.remove('show')}
@@ -177,7 +177,7 @@ document.getElementById('scanCount').textContent=count;
 }
 function bpTF(btn){document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
 function openSetup(symbol){
-const s=setups[symbol]||setups.RELIANCE;
+const s=liveSetups[symbol]||setups[symbol]||setups.RELIANCE;
 document.getElementById('modalTitle').textContent=symbol+' • Trade Blueprint';
 document.getElementById('modalBody').innerHTML='<div class="section-subtitle" style="margin-top:12px">'+s.type+'</div><div class="detail-grid"><div class="detail"><small>ENTRY</small><b>'+s.price+'</b></div><div class="detail"><small>STOP LOSS</small><b>'+s.sl+'</b></div><div class="detail"><small>TARGET 1</small><b>'+s.t1+'</b></div><div class="detail"><small>RISK / REWARD</small><b>'+s.rr+'</b></div><div class="detail"><small>SETUP SCORE</small><b>'+s.score+'</b></div><div class="detail"><small>STATUS</small><b>'+s.status+'</b></div></div><button class="primary" onclick="openBlueprintPage(\''+symbol+'\')">Open Full Blueprint</button><div class="ai-card" style="margin-top:12px"><div class="ai-title">🧠 AI Critic</div><div class="ai-text">Demo analysis only. Confirm price action, liquidity, structure and risk/reward before any real trade.</div></div>';
 document.getElementById('modal').classList.add('show');
@@ -187,6 +187,75 @@ closeModal();showPage('blueprint',document.querySelectorAll('.nav')[2]);
 const s=setups[symbol]||setups.RELIANCE;
 document.getElementById('blueprintContent').innerHTML='<div class="blueprint-symbol">'+symbol+'</div><div class="blueprint-status">'+s.status+' • '+s.mode+'</div><div class="blueprint-score">'+s.score+' <small>SETUP SCORE</small></div><div class="blueprint-grid"><div class="blueprint-box"><small>ENTRY</small><b>'+s.price+'</b></div><div class="blueprint-box"><small>STOP LOSS</small><b>'+s.sl+'</b></div><div class="blueprint-box"><small>TARGET 1</small><b>'+s.t1+'</b></div><div class="blueprint-box"><small>RISK / REWARD</small><b>'+s.rr+'</b></div></div>';
 }
+function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('show')}
+function money(n){return Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2})}
+function setBadge(text,live){
+  const b=document.getElementById('dataBadge');if(!b)return;
+  b.textContent=text;b.style.background=live?'#dcfce7':'#fff3cd';b.style.color=live?'#166534':'#856404';
+}
+function setMarket(id,value,change){
+  const p=document.getElementById(id);if(p)p.textContent=value==null?'—':money(value);
+  const el=document.getElementById(id==='niftyPrice'?'niftyChange':id==='bankPrice'?'bankChange':'vixState');
+  if(el){el.textContent=change||'—';el.className=change&&String(change).startsWith('▼')?'down':'up'}
+}
+async function loadLiveMarket(){
+  try{
+    const r=await fetch('/api/upstox/quote?instrument_key='+encodeURIComponent('NSE_INDEX|Nifty 50,NSE_INDEX|Nifty Bank,NSE_INDEX|India VIX'),{cache:'no-store'});
+    const d=await r.json();
+    if(!r.ok||!d.ok)throw new Error(d.error||'Upstox not connected');
+    const vals=Object.values(d.data||{});
+    const pick=(name)=>vals.find(x=>String(x.instrument_token||'').includes(name));
+    const n=pick('Nifty 50'),b=pick('Nifty Bank'),v=pick('India VIX');
+    const pct=x=>x&&x.cp?((x.last_price/x.cp-1)*100):null;
+    if(n)setMarket('niftyPrice',n.last_price,(pct(n)>=0?'▲ +':'▼ ')+pct(n).toFixed(2)+'%');
+    if(b)setMarket('bankPrice',b.last_price,(pct(b)>=0?'▲ +':'▼ ')+pct(b).toFixed(2)+'%');
+    if(v)setMarket('vixPrice',v.last_price,'LIVE');
+    setBadge('DATA: UPSTOX • LIVE',true);
+    return true;
+  }catch(e){
+    setBadge('DATA: UPSTOX • CONNECT',false);
+    return false;
+  }
+}
+function renderLiveRows(rows){
+  liveRows=rows||[];liveSetups={};
+  const list=document.getElementById('scannerList');
+  if(!list)return;
+  list.innerHTML='';
+  liveRows.forEach(s=>{
+    liveSetups[s.symbol]={price:'₹'+money(s.price),sl:'₹'+money(s.sl),t1:'₹'+money(s.t1),rr:s.rr,score:s.score+'/100',type:(s.setup||'WAIT')+' • Swing',status:s.reason||'Live Upstox analysis',mode:'Swing'};
+    const el=document.createElement('div');
+    el.className='scanner-card';el.dataset.stock=s.symbol;el.dataset.signal=s.signal||'wait';el.dataset.mode='swing';
+    const scoreClass=s.score>=85?'signal-long':s.score>=75?'signal-watch':'signal-avoid';
+    el.innerHTML='<div class="scanner-top"><div><div class="scanner-symbol">'+s.symbol+'</div><div class="scanner-price">₹'+money(s.price)+' • '+(s.data_source||'Upstox')+'</div></div><div class="signal '+scoreClass+'">'+(s.signal||'NO TRADE')+' '+s.score+'</div></div><div class="scanner-grid"><div class="scanner-metric"><small>TREND</small><b class="'+(s.score>=75?'pass':'watch')+'">'+(s.setup||'WAIT')+'</b></div><div class="scanner-metric"><small>5M VOL</small><b class="'+(s.volume_ratio>=1.5?'pass':'watch')+'">'+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'</b></div><div class="scanner-metric"><small>R:R</small><b class="'+(s.score>=75?'pass':'watch')+'">'+s.rr+'</b></div><div class="scanner-metric"><small>STATUS</small><b class="'+(s.score>=75?'pass':'fail')+'">'+(s.score>=75?'ELIGIBLE':'WAIT')+'</b></div></div><div class="scan-score"><i style="width:'+s.score+'%"></i></div><div class="scan-note">'+(s.reason||'No clean confirmation')+' • '+(s.data_source||'Upstox')+'</div></div>';
+    el.onclick=()=>openSetup(s.symbol);list.appendChild(el);
+  });
+  searchStocks();
+}
+async function scanLive(){
+  const status=document.getElementById('scannerStatus');if(status)status.textContent='Scanning Upstox live candles…';
+  try{
+    const r=await fetch('/api/screener?symbols=RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL,MARUTI,BHARTIARTL',{cache:'no-store'});
+    const d=await r.json();
+    if(!r.ok||!d.ok)throw new Error(d.error||'Connect Upstox first');
+    renderLiveRows(d.rows||[]);
+    if(status)status.textContent='LIVE • Upstox V3 candles • 5m confirmation • updated '+new Date(d.updated_at).toLocaleTimeString();
+    setBadge('DATA: UPSTOX • LIVE',true);
+  }catch(e){
+    if(status)status.textContent='Live scanner unavailable • '+(e.message||'Connect Upstox');
+    document.getElementById('scanCount').textContent='0';
+  }
+}
+(function(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('upstox')==='connected'){
+    localStorage.setItem('sb_provider','Upstox');
+    history.replaceState({},'',location.pathname);
+  }
+  loadLiveMarket();
+  scanLive();
+  setInterval(loadLiveMarket,60000);
+})(); 
 function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('show')}
 </script>
 <script>
