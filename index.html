@@ -37,7 +37,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 </head>
 <body>
 <div class="app">
-<header class="header"><div class="logo">📊 Stock Blueprint</div><div class="demo">DEMO DATA</div></header>
+<header class="header"><div class="logo">📊 Stock Blueprint</div><button class="demo" onclick="openDataModal()">DEMO DATA • CONNECT</button></header>
 <section class="market"><div class="market-grid">
 <div class="market-card"><small>NIFTY 50</small><div class="market-price">25,680</div><small class="up">▲ +0.42%</small></div>
 <div class="market-card"><small>BANK NIFTY</small><div class="market-price">57,420</div><small class="up">▲ +0.31%</small></div>
@@ -96,6 +96,38 @@ button,input,select{font:inherit}button{cursor:pointer}
 </nav>
 </div>
 
+<div id="dataModal" class="modal" onclick="closeDataModal(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">📡 Market Data Connection</div>
+      <button class="close" onclick="closeDataModal()">×</button>
+    </div>
+    <div class="section-subtitle" style="margin-top:12px">
+      Abhi app DEMO DATA par hai. Real Indian intraday candles ke liye broker/data provider connect karna hoga.
+    </div>
+    <div class="mode-card">
+      <div class="mode-name">🟢 Upstox</div>
+      <div class="mode-desc">Live quotes + historical candles + India VIX/GIFT NIFTY support available through the broker API. Best fit for our next live-data phase.</div>
+      <button class="primary" onclick="selectProvider('Upstox')">Select Upstox</button>
+    </div>
+    <div class="mode-card">
+      <div class="mode-name">🔵 Zerodha Kite Connect</div>
+      <div class="mode-desc">Live market streaming and historical candle APIs. API access is configured through your Kite developer app.</div>
+      <button class="primary" onclick="selectProvider('Zerodha Kite')">Select Zerodha</button>
+    </div>
+    <div class="mode-card">
+      <div class="mode-name">🟡 Twelve Data</div>
+      <div class="mode-desc">Useful as a market-data provider, but its NSE page currently lists EOD delay, so it is not our first choice for live intraday scanning.</div>
+      <button class="primary" onclick="selectProvider('Twelve Data')">Select Twelve Data</button>
+    </div>
+    <div class="ai-card" style="margin-top:12px">
+      <div class="ai-title">🔐 Security rule</div>
+      <div class="ai-text">API secret/access token frontend code mein nahi rakhenge. Vercel Environment Variables + server API route use karenge.</div>
+      <div class="no-trade">⚠️ Until connected, scanner numbers are DEMO ONLY — real trade decision ke liye use mat karo.</div>
+    </div>
+  </div>
+</div>
+
 <div id="modal" class="modal" onclick="closeModal(event)"><div class="modal-box"><div class="modal-head"><div id="modalTitle" class="modal-title">Setup</div><button class="close" onclick="closeModal()">×</button></div><div id="modalBody"></div></div></div>
 
 <script>
@@ -107,6 +139,14 @@ ICICIBANK:{price:'₹1,260',sl:'₹1,245',t1:'₹1,295',rr:'1:2.3',score:'76/100
 };
 let scanMode='all',scanTF='5m';
 
+function openDataModal(){document.getElementById('dataModal').classList.add('show')}
+function closeDataModal(e){if(e&&e.target!==document.getElementById('dataModal'))return;document.getElementById('dataModal').classList.remove('show')}
+function selectProvider(name){
+  localStorage.setItem('sb_provider',name);
+  document.querySelector('.demo').textContent='DATA: '+name.toUpperCase();
+  closeDataModal();
+  alert(name+' selected. Next step: secure API connection + live candles.');
+}
 function showPage(id,btn){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 document.getElementById(id).classList.add('active');
