@@ -217,6 +217,25 @@ async function loadLiveMarket(){
     return false;
   }
 }
+function renderHomeRows(rows){
+  const sections=document.querySelectorAll('#home .section');
+  const section=sections[0];
+  if(!section)return;
+  section.querySelectorAll('.setup.live-generated').forEach(x=>x.remove());
+  const firstStatic=section.querySelector('.setup:not(.live-generated)');
+  (rows||[]).slice(0,5).forEach(s=>{
+    const el=document.createElement('div');
+    el.className='setup live-generated';
+    el.dataset.mode='swing';
+    el.dataset.stock=s.symbol;
+    const scoreClass=s.score>=85?'score-green':s.score>=75?'score-yellow':'';
+    const badge=s.signal||'NO TRADE';
+    const sl='₹'+money(s.sl), t1='₹'+money(s.t1);
+    el.innerHTML='<div class="setup-head"><div><div class="stock">'+s.symbol+'</div><div class="setup-type">'+(s.setup||'WAIT')+' • Live Upstox</div></div><div class="score-badge '+scoreClass+'">'+badge+' '+s.score+'/100</div></div><div class="metrics"><div class="metric"><small>LIVE</small><b>₹'+money(s.price)+'</b></div><div class="metric"><small>SL</small><b>'+sl+'</b></div><div class="metric"><small>T1</small><b>'+t1+'</b></div><div class="metric"><small>R:R</small><b>'+s.rr+'</b></div></div><div class="reasons"><div class="reason good">✓ Live Price</div><div class="reason '+(s.volume_ratio&&s.volume_ratio>=1.5?'good':'warn')+'">'+(s.volume_ratio?'✓ Volume '+s.volume_ratio+'x':'◐ Volume')+'</div><div class="reason '+(s.score>=75?'good':'warn')+'">'+(s.score>=75?'✓ Trend':'⚠ Trend')+'</div><div class="reason '+(s.score>=75?'good':'warn')+'">'+(s.score>=75?'✓ Eligible':'⚠ Confirmation')+'</div></div>';
+    el.onclick=()=>openSetup(s.symbol);
+    if(firstStatic) section.insertBefore(el,firstStatic); else section.appendChild(el);
+  });
+}
 function renderLiveRows(rows){
   liveRows=rows||[];liveSetups={};
   const list=document.getElementById('scannerList');
@@ -239,6 +258,7 @@ async function scanLive(){
     const d=await r.json();
     if(!r.ok||!d.ok)throw new Error(d.error||'Connect Upstox first');
     renderLiveRows(d.rows||[]);
+    renderHomeRows(d.rows||[]);
     if(status)status.textContent='LIVE • Upstox V3 candles • 5m confirmation • updated '+new Date(d.updated_at).toLocaleTimeString();
     setBadge('DATA: UPSTOX • LIVE',true);
   }catch(e){
