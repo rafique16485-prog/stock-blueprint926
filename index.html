@@ -57,7 +57,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 
 <main id="scanner" class="page">
 <section class="section"><div class="section-title">🔎 Stock Scanner</div><div id="scannerStatus" class="section-subtitle">Upstox live • 5m confirmation • price action + volume</div>
-<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="searchStocks()">SCAN</button></div>
+<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="scanLive()">SCAN</button></div>
 <div class="control-label">Trading style</div><div class="controls"><button class="chip active" onclick="setScanMode(this,'all')">All</button><button class="chip" onclick="setScanMode(this,'scalping')">Scalping</button><button class="chip" onclick="setScanMode(this,'intraday')">Intraday</button><button class="chip" onclick="setScanMode(this,'swing')">Swing</button><button class="chip" onclick="setScanMode(this,'positional')">Positional</button></div>
 <div class="control-label">Timeframe</div><div class="controls"><button class="chip tf-chip active" onclick="setTF(this,'5m')">5m</button><button class="chip tf-chip" onclick="setTF(this,'15m')">15m</button><button class="chip tf-chip" onclick="setTF(this,'1H')">1H</button><button class="chip tf-chip" onclick="setTF(this,'4H')">4H</button><button class="chip tf-chip" onclick="setTF(this,'1D')">1D</button><button class="chip tf-chip" onclick="setTF(this,'1W')">1W</button></div>
 <div class="scanner-summary"><span>Live setups</span><b id="scanCount">—</b><span id="scanTF">5m • All</span></div>
