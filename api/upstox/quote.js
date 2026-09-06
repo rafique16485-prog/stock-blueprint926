@@ -13,7 +13,7 @@ module.exports = async function handler(req, res) {
   }
 
   const instrumentKey = (req.query && req.query.instrument_key) || "NSE_INDEX|Nifty 50,NSE_INDEX|India VIX";
-  const url = new URL("https://api.upstox.com/v3/market-quote/quotes");
+  const url = new URL("https://api.upstox.com/v3/market-quote/ltp");
   url.searchParams.set("instrument_key", instrumentKey);
 
   const response = await fetch(url, {
