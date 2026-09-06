@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Blueprint</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#111827;
+}
+
+.app{
+  max-width:480px;
+  margin:auto;
+  min-height:100vh;
+  background:#fff;
+  padding-bottom:80px;
+}
+
+.header{
+  padding:18px 16px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:20px;
+  font-weight:800;
+}
+
+.demo{
+  font-size:10px;
+  background:#fff3cd;
+  color:#856404;
+  padding:5px 8px;
+  border-radius:20px;
+  font-weight:bold;
+}
+
+.market{
+  padding:0 16px;
+}
+
+.market-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.card{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:12px;
+}
+
+.card small{
+  color:#6b7280;
+  font-size:11px;
+}
+
+.price{
+  font-size:16px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+.up{
+  color:#059669;
+}
+
+.down{
+  color:#dc2626;
+}
+
+.regime{
+  margin:12px 16px;
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+  border-radius:14px;
+  padding:14px;
+}
+
+.regime-title{
+  font-size:11px;
+  color:#6b7280;
+}
+
+.regime-value{
+  font-size:20px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+.score{
+  float:right;
+  font-weight:bold;
+}
+
+.section{
+  padding:0 16px;
+  margin-top:18px;
+}
+
+.section-title{
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding-bottom:5px;
+}
+
+.tab{
+  border:1px solid #ddd;
+  background:white;
+  padding:8px 12px;
+  border-radius:20px;
+  white-space:nowrap;
+  font-size:12px;
+}
+
+.tab.active{
+  background:#111827;
+  color:white;
+}
+
+.setup{
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:10px;
+}
+
+.setup-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.stock{
+  font-size:17px;
+  font-weight:800;
+}
+
+.badge{
+  font-size:10px;
+  padding:5px 7px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.green{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.yellow{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-top:12px;
+}
+
+.metric{
+  background:#f8fafc;
+  border-radius:9px;
+  padding:8px 5px;
+  text-align:center;
+}
+
+.metric small{
+  display:block;
+  color:#6b7280;
+  font-size:9px;
+}
+
+.metric b{
+  font-size:11px;
+}
+
+.reason{
+  margin-top:11px;
+  font-size:11px;
+  color:#4b5563;
+  line-height:1.5;
+}
+
+.critic{
+  background:#111827;
+  color:white;
+  border-radius:16px;
+  padding:15px;
+}
+
+.critic h3{
+  font-size:14px;
+  margin-bottom:9px;
+}
+
+.critic p{
+  font-size:11px;
+  line-height:1.6;
+  color:#d1d5db;
+}
+
+.no-trade{
+  margin-top:12px;
+  padding:11px;
+  border-radius:10px;
+  background:#fef2f2;
+  color:#991b1b;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  max-width:480px;
+  width:100%;
+  height:65px;
+  background:white;
+  border-top:1px solid #e5e7eb;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:10;
+}
+
+.nav{
+  border:0;
+  background:white;
+  font-size:10px;
+  color:#6b7280;
+}
+
+.nav span{
+  display:block;
+  font-size:19px;
+  margin-bottom:3px;
+}
+
+.nav.active{
+  color:#111827;
+  font-weight:bold;
+}
+
+@media(min-width:600px){
+  body{
+    padding:20px 0;
+  }
+
+  .app{
+    border-radius:25px;
+    box-shadow:0 10px 40px rgba(0,0,0,.1);
+    overflow:hidden;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="logo">📊 Stock Blueprint</div>
+    <div class="demo">DEMO DATA</div>
+  </header>
+
+  <section class="market">
+
+    <div class="market-grid">
+
+      <div class="card">
+        <small>NIFTY 50</small>
+        <div class="price">25,680</div>
+        <small class="up">▲ +0.42%</small>
+      </div>
+
+      <div class="card">
+        <small>BANK NIFTY</small>
+        <div class="price">57,420</div>
+        <small class="up">▲ +0.31%</small>
+      </div>
+
+      <div class="card">
+        <small>INDIA VIX</small>
+        <div class="price">13.80</div>
+        <small>Normal</small>
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="regime">
+    <div class="regime-title">MARKET REGIME</div>
+    <div class="regime-value">
+      🟢 BULLISH
+      <span class="score">78/100</span>
+    </div>
+  </div>
+
+  <section class="section">
+
+    <div class="tabs">
+      <button class="tab active">All</button>
+      <button class="tab">Intraday</button>
+      <button class="tab">Scalping</button>
+      <button class="tab">Swing</button>
+      <button class="tab">Positional</button>
+      <button class="tab">Long Term</button>
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="section-title">🔥 Top Setups</div>
+
+    <div class="setup">
+
+      <div class="setup-head">
+        <div>
+          <div class="stock">RELIANCE</div>
+          <small>Breakout + Retest • Swing</small>
+        </div>
+
+        <div class="badge green">87/100</div>
+      </div>
+
+      <div class="metrics">
+
+        <div class="metric">
+          <small>ENTRY</small>
+          <b>XXXX</b>
+        </div>
+
+        <div class="metric">
+          <small>SL</small>
+          <b>XXXX</b>
+        </div>
+
+        <div class="metric">
+          <small>T1</small>
+          <b>XXXX</b>
+        </div>
+
+        <div class="metric">
+          <small>R:R</small>
+          <b>1:2.4</b>
+        </div>
+
+      </div>
+
+      <div class="reason">
+        🟢 Trend aligned • 🟢 Volume expansion •
+        🟢 Liquidity sweep • 🟡 Resistance nearby
+      </div>
+
+    </div>
+
+
+    <div class="setup">
+
+      <div class="setup-head">
+        <div>
+          <div class="stock">HDFCBANK</div>
+          <small>Liquidity Sweep • Swing</small>
+        </div>
+
+        <div class="badge yellow">81/100</div>
+      </div>
+
+      <div class="metrics">
+
+        <div class="metric">
+          <small>ENTRY</small>
+          <b>XXXX</b>
+        </div>
+
+        <div class="metric">
+          <small>SL</small>
+          <b>XXXX</b>
+        </div>
+
+        <div class="metric">
+          <small>T1</small>
+          <b>XXXX</b>
+        </div>
+
+        <div class="metric">
+          <small>R:R</small>
+          <b>1:2.1</b>
+        </div>
+
+      </div>
+
+      <div class="reason">
+        🟢 Market structure • 🟢 Demand zone •
+        🟢 Momentum • 🟡 Confirmation required
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="critic">
+
+      <h3>🧠 AI CRITIC</h3>
+
+      <p>
+        The setup has trend, volume and price-action confirmation.
+        Potential resistance is the main risk. Wait for confirmation
+        instead of entering blindly.
+      </p>
+
+      <div class="no-trade">
+        ⚠️ No-trade filter: ACTIVE when risk/reward or confirmation fails
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <nav class="bottom">
+
+    <button class="nav active">
+      <span>🏠</span>
+      Home
+    </button>
+
+    <button class="nav">
+      <span>🔎</span>
+      Scanner
+    </button>
+
+    <button class="nav">
+      <span>🎯</span>
+      Blueprint
+    </button>
+
+    <button class="nav">
+      <span>⭐</span>
+      Watchlist
+    </button>
+
+    <button class="nav">
+      <span>📓</span>
+      Journal
+    </button>
+
+  </nav>
+
+</div>
+
+</body>
+  </html>
