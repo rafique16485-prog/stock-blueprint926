@@ -1,3 +1,5 @@
+const crypto = require("crypto");
+
 module.exports = async function handler(req, res) {
   const clientId = process.env.UPSTOX_CLIENT_ID;
   const clientSecret = process.env.UPSTOX_CLIENT_SECRET;
@@ -6,12 +8,6 @@ module.exports = async function handler(req, res) {
   const query = req.query || {};
   const code = query.code;
   const returnedState = query.state;
-  const cookies = Object.fromEntries(
-    (req.headers.cookie || "").split(";").filter(Boolean).map(v => {
-      const i = v.indexOf("=");
-      return [v.slice(0, i).trim(), decodeURIComponent(v.slice(i + 1))];
-    })
-  );
 
   if (!clientId || !clientSecret || !redirectUri) {
     res.status(500).send("Upstox credentials are not configured in Vercel.");
@@ -23,8 +19,30 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  if (!returnedState || !cookies.upstox_oauth_state || returnedState !== cookies.upstox_oauth_state) {
-    res.status(400).send("Invalid OAuth state. Please start the connection again.");
+  // Verify the signed state without depending on a browser cookie.
+  let stateValid = false;
+  try {
+    const parts = String(returnedState || "").split(".");
+    if (parts.length === 2) {
+      const [encoded, signature] = parts;
+      const expected = crypto
+        .createHmac("sha256", clientSecret)
+        .update(encoded)
+        .digest("base64url");
+
+      const a = Buffer.from(signature);
+      const b = Buffer.from(expected);
+      if (a.length === b.length && crypto.timingSafeEqual(a, b)) {
+        const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8"));
+        stateValid = Number.isFinite(payload.ts) && Date.now() - payload.ts <= 10 * 60 * 1000;
+      }
+    }
+  } catch (_) {
+    stateValid = false;
+  }
+
+  if (!stateValid) {
+    res.status(400).send("Invalid or expired OAuth state. Please start the Upstox connection again.");
     return;
   }
 
@@ -39,7 +57,7 @@ module.exports = async function handler(req, res) {
   const tokenResponse = await fetch("https://api.upstox.com/v2/login/authorization/token", {
     method: "POST",
     headers: {
-      "accept": "application/json",
+      accept: "application/json",
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body
@@ -52,11 +70,11 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  res.setHeader("Set-Cookie", [
+  res.setHeader(
+    "Set-Cookie",
     "upstox_access_token=" + encodeURIComponent(data.access_token) +
-      "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=86400",
-    "upstox_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
-  ]);
+      "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=86400"
+  );
 
   res.writeHead(302, { Location: "/?upstox=connected" });
   res.end();
