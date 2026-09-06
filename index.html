@@ -13,24 +13,32 @@
 }
 
 body{
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#eef1f5;
   color:#111827;
 }
 
-.app{
-  max-width:480px;
-  margin:auto;
-  min-height:100vh;
-  background:#fff;
-  padding-bottom:80px;
+button{
+  font-family:inherit;
+  cursor:pointer;
 }
 
+.app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  margin:auto;
+  background:#ffffff;
+  padding-bottom:82px;
+}
+
+/* HEADER */
+
 .header{
-  padding:18px 16px 12px;
+  padding:17px 16px 12px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
 }
 
 .logo{
@@ -40,12 +48,14 @@ body{
 
 .demo{
   font-size:10px;
+  font-weight:700;
+  padding:6px 9px;
+  border-radius:20px;
   background:#fff3cd;
   color:#856404;
-  padding:5px 8px;
-  border-radius:20px;
-  font-weight:bold;
 }
+
+/* MARKET */
 
 .market{
   padding:0 16px;
@@ -57,22 +67,22 @@ body{
   gap:8px;
 }
 
-.card{
+.market-card{
   background:#f8fafc;
   border:1px solid #e5e7eb;
   border-radius:14px;
-  padding:12px;
+  padding:11px;
 }
 
-.card small{
+.market-card small{
   color:#6b7280;
-  font-size:11px;
+  font-size:10px;
 }
 
-.price{
-  font-size:16px;
-  font-weight:800;
+.market-price{
   margin-top:5px;
+  font-size:15px;
+  font-weight:800;
 }
 
 .up{
@@ -83,29 +93,83 @@ body{
   color:#dc2626;
 }
 
+/* REGIME */
+
 .regime{
   margin:12px 16px;
+  padding:14px;
+  border-radius:16px;
   background:#ecfdf5;
   border:1px solid #a7f3d0;
-  border-radius:14px;
-  padding:14px;
 }
 
 .regime-title{
-  font-size:11px;
+  font-size:10px;
   color:#6b7280;
+  font-weight:700;
+}
+
+.regime-main{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:5px;
 }
 
 .regime-value{
-  font-size:20px;
+  font-size:19px;
   font-weight:800;
-  margin-top:4px;
 }
 
-.score{
-  float:right;
-  font-weight:bold;
+.regime-score{
+  font-size:19px;
+  font-weight:800;
 }
+
+/* PAGE */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+/* FILTER */
+
+.filter-area{
+  padding:4px 16px 0;
+}
+
+.filters{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+  display:none;
+}
+
+.filter{
+  border:1px solid #e5e7eb;
+  background:#ffffff;
+  padding:8px 12px;
+  border-radius:22px;
+  white-space:nowrap;
+  font-size:11px;
+  color:#374151;
+}
+
+.filter.active{
+  background:#111827;
+  color:#ffffff;
+  border-color:#111827;
+}
+
+/* SECTION */
 
 .section{
   padding:0 16px;
@@ -118,38 +182,27 @@ body{
   margin-bottom:10px;
 }
 
-.tabs{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  padding-bottom:5px;
+.section-subtitle{
+  font-size:11px;
+  color:#6b7280;
+  margin-top:-5px;
+  margin-bottom:11px;
 }
 
-.tab{
-  border:1px solid #ddd;
-  background:white;
-  padding:8px 12px;
-  border-radius:20px;
-  white-space:nowrap;
-  font-size:12px;
-}
-
-.tab.active{
-  background:#111827;
-  color:white;
-}
+/* SETUP */
 
 .setup{
   border:1px solid #e5e7eb;
-  border-radius:16px;
+  border-radius:17px;
   padding:14px;
   margin-bottom:10px;
+  background:#ffffff;
 }
 
 .setup-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
+  align-items:flex-start;
 }
 
 .stock{
@@ -157,21 +210,32 @@ body{
   font-weight:800;
 }
 
-.badge{
-  font-size:10px;
-  padding:5px 7px;
-  border-radius:10px;
-  font-weight:bold;
+.setup-type{
+  margin-top:3px;
+  font-size:11px;
+  color:#6b7280;
 }
 
-.green{
+.score-badge{
+  padding:6px 8px;
+  border-radius:11px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.score-green{
   background:#dcfce7;
   color:#166534;
 }
 
-.yellow{
+.score-yellow{
   background:#fef3c7;
   color:#92400e;
+}
+
+.score-red{
+  background:#fee2e2;
+  color:#991b1b;
 }
 
 .metrics{
@@ -182,10 +246,10 @@ body{
 }
 
 .metric{
-  background:#f8fafc;
-  border-radius:9px;
-  padding:8px 5px;
   text-align:center;
+  padding:9px 4px;
+  background:#f8fafc;
+  border-radius:10px;
 }
 
 .metric small{
@@ -195,76 +259,372 @@ body{
 }
 
 .metric b{
+  display:block;
+  margin-top:3px;
   font-size:11px;
+}
+
+.reasons{
+  margin-top:11px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
 }
 
 .reason{
-  margin-top:11px;
-  font-size:11px;
-  color:#4b5563;
-  line-height:1.5;
+  font-size:9px;
+  padding:5px 7px;
+  border-radius:8px;
+  background:#f3f4f6;
+  color:#374151;
 }
 
-.critic{
+.reason.good{
+  background:#ecfdf5;
+  color:#166534;
+}
+
+.reason.warn{
+  background:#fff7ed;
+  color:#9a3412;
+}
+
+/* SCANNER */
+
+.scanner-search{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.search-box{
+  flex:1;
+  border:1px solid #d1d5db;
+  border-radius:11px;
+  padding:11px;
+  outline:none;
+  font-size:12px;
+}
+
+.search-button{
+  border:0;
   background:#111827;
   color:white;
-  border-radius:16px;
+  border-radius:11px;
+  padding:0 14px;
+}
+
+.scanner-card{
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:13px;
+  margin-bottom:8px;
+}
+
+.scanner-top{
+  display:flex;
+  justify-content:space-between;
+}
+
+.scanner-symbol{
+  font-weight:800;
+  font-size:15px;
+}
+
+.scanner-price{
+  font-size:12px;
+  color:#6b7280;
+  margin-top:3px;
+}
+
+.signal{
+  font-size:10px;
+  font-weight:800;
+  padding:5px 7px;
+  border-radius:8px;
+}
+
+.signal-long{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.signal-watch{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.signal-avoid{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.scanner-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-top:10px;
+}
+
+.scanner-metric{
+  background:#f8fafc;
+  padding:8px 4px;
+  border-radius:8px;
+  text-align:center;
+}
+
+.scanner-metric small{
+  display:block;
+  font-size:8px;
+  color:#6b7280;
+}
+
+.scanner-metric b{
+  font-size:10px;
+}
+
+/* BLUEPRINT */
+
+.blueprint-hero{
+  background:#111827;
+  color:white;
+  border-radius:18px;
+  padding:16px;
+}
+
+.blueprint-symbol{
+  font-size:21px;
+  font-weight:800;
+}
+
+.blueprint-status{
+  margin-top:4px;
+  color:#d1d5db;
+  font-size:11px;
+}
+
+.blueprint-score{
+  margin-top:14px;
+  font-size:28px;
+  font-weight:800;
+}
+
+.blueprint-score small{
+  font-size:11px;
+  color:#9ca3af;
+}
+
+.blueprint-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:14px;
+}
+
+.blueprint-box{
+  background:#f8fafc;
+  color:#111827;
+  padding:11px;
+  border-radius:10px;
+}
+
+.blueprint-box small{
+  color:#6b7280;
+  font-size:9px;
+}
+
+.blueprint-box b{
+  display:block;
+  margin-top:4px;
+  font-size:14px;
+}
+
+.engine-card{
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:14px;
+  margin-top:10px;
+}
+
+.engine-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:9px 0;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.engine-row:last-child{
+  border-bottom:0;
+}
+
+.engine-name{
+  font-size:11px;
+  font-weight:700;
+}
+
+.engine-value{
+  font-size:10px;
+  font-weight:800;
+}
+
+.pass{
+  color:#059669;
+}
+
+.watch{
+  color:#d97706;
+}
+
+.fail{
+  color:#dc2626;
+}
+
+/* AI */
+
+.ai-card{
+  background:#111827;
+  color:white;
+  border-radius:17px;
   padding:15px;
 }
 
-.critic h3{
+.ai-title{
   font-size:14px;
-  margin-bottom:9px;
+  font-weight:800;
 }
 
-.critic p{
+.ai-text{
+  margin-top:9px;
   font-size:11px;
   line-height:1.6;
   color:#d1d5db;
 }
 
 .no-trade{
-  margin-top:12px;
-  padding:11px;
+  margin-top:11px;
+  background:#fff1f2;
+  color:#9f1239;
   border-radius:10px;
-  background:#fef2f2;
-  color:#991b1b;
-  font-size:11px;
-  font-weight:bold;
+  padding:10px;
+  font-size:10px;
+  font-weight:800;
 }
+
+/* WATCHLIST */
+
+.watch-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+
+.watch-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.star{
+  font-size:18px;
+}
+
+.watch-symbol{
+  font-size:14px;
+  font-weight:800;
+}
+
+.watch-info{
+  font-size:10px;
+  color:#6b7280;
+  margin-top:3px;
+}
+
+.watch-price{
+  text-align:right;
+  font-size:12px;
+  font-weight:800;
+}
+
+/* JOURNAL */
+
+.journal-card{
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:13px;
+  margin-bottom:9px;
+}
+
+.journal-top{
+  display:flex;
+  justify-content:space-between;
+}
+
+.journal-symbol{
+  font-weight:800;
+}
+
+.journal-result{
+  font-size:11px;
+  font-weight:800;
+}
+
+.profit{
+  color:#059669;
+}
+
+.loss{
+  color:#dc2626;
+}
+
+.journal-info{
+  display:flex;
+  gap:12px;
+  margin-top:9px;
+  color:#6b7280;
+  font-size:10px;
+}
+
+/* BOTTOM NAV */
 
 .bottom{
   position:fixed;
   bottom:0;
   left:50%;
   transform:translateX(-50%);
-  max-width:480px;
   width:100%;
-  height:65px;
-  background:white;
+  max-width:480px;
+  height:67px;
+  background:#ffffff;
   border-top:1px solid #e5e7eb;
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  z-index:10;
+  z-index:100;
 }
 
 .nav{
   border:0;
   background:white;
-  font-size:10px;
   color:#6b7280;
+  font-size:9px;
 }
 
-.nav span{
+.nav-icon{
   display:block;
-  font-size:19px;
+  font-size:18px;
   margin-bottom:3px;
 }
 
 .nav.active{
   color:#111827;
-  font-weight:bold;
+  font-weight:800;
 }
+
+/* DESKTOP */
 
 @media(min-width:600px){
   body{
@@ -273,8 +633,12 @@ body{
 
   .app{
     border-radius:25px;
-    box-shadow:0 10px 40px rgba(0,0,0,.1);
     overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.10);
+  }
+
+  .bottom{
+    border-radius:0 0 25px 25px;
   }
 }
 </style>
@@ -284,72 +648,112 @@ body{
 
 <div class="app">
 
-  <header class="header">
-    <div class="logo">📊 Stock Blueprint</div>
-    <div class="demo">DEMO DATA</div>
-  </header>
+<header class="header">
+  <div class="logo">📊 Stock Blueprint</div>
+  <div class="demo">DEMO DATA</div>
+</header>
 
-  <section class="market">
+<section class="market">
 
-    <div class="market-grid">
+  <div class="market-grid">
 
-      <div class="card">
-        <small>NIFTY 50</small>
-        <div class="price">25,680</div>
-        <small class="up">▲ +0.42%</small>
-      </div>
-
-      <div class="card">
-        <small>BANK NIFTY</small>
-        <div class="price">57,420</div>
-        <small class="up">▲ +0.31%</small>
-      </div>
-
-      <div class="card">
-        <small>INDIA VIX</small>
-        <div class="price">13.80</div>
-        <small>Normal</small>
-      </div>
-
+    <div class="market-card">
+      <small>NIFTY 50</small>
+      <div class="market-price">25,680</div>
+      <small class="up">▲ +0.42%</small>
     </div>
 
-  </section>
-
-  <div class="regime">
-    <div class="regime-title">MARKET REGIME</div>
-    <div class="regime-value">
-      🟢 BULLISH
-      <span class="score">78/100</span>
+    <div class="market-card">
+      <small>BANK NIFTY</small>
+      <div class="market-price">57,420</div>
+      <small class="up">▲ +0.31%</small>
     </div>
+
+    <div class="market-card">
+      <small>INDIA VIX</small>
+      <div class="market-price">13.80</div>
+      <small>Normal</small>
+    </div>
+
   </div>
 
-  <section class="section">
+</section>
 
-    <div class="tabs">
-      <button class="tab active">All</button>
-      <button class="tab">Intraday</button>
-      <button class="tab">Scalping</button>
-      <button class="tab">Swing</button>
-      <button class="tab">Positional</button>
-      <button class="tab">Long Term</button>
+<div class="regime">
+
+  <div class="regime-title">MARKET REGIME</div>
+
+  <div class="regime-main">
+    <div class="regime-value">🟢 BULLISH</div>
+    <div class="regime-score">78/100</div>
+  </div>
+
+</div>
+
+
+<!-- HOME -->
+
+<main id="home" class="page active">
+
+  <section class="filter-area">
+
+    <div class="filters">
+
+      <button class="filter active" onclick="filterMode(this,'all')">
+        All
+      </button>
+
+      <button class="filter" onclick="filterMode(this,'intraday')">
+        Intraday
+      </button>
+
+      <button class="filter" onclick="filterMode(this,'scalping')">
+        Scalping
+      </button>
+
+      <button class="filter" onclick="filterMode(this,'swing')">
+        Swing
+      </button>
+
+      <button class="filter" onclick="filterMode(this,'positional')">
+        Positional
+      </button>
+
+      <button class="filter" onclick="filterMode(this,'longterm')">
+        Long Term
+      </button>
+
     </div>
 
   </section>
+
 
   <section class="section">
 
     <div class="section-title">🔥 Top Setups</div>
 
-    <div class="setup">
+    <div class="section-subtitle">
+      Demo scanner — real market API will be connected later.
+    </div>
+
+
+    <div class="setup" data-mode="swing">
 
       <div class="setup-head">
+
         <div>
           <div class="stock">RELIANCE</div>
-          <small>Breakout + Retest • Swing</small>
+          <div class="setup-type">
+            Breakout + Retest • Swing
+          </div>
         </div>
 
-        <div class="badge green">87/100</div>
+        <div class="score-badge score-green">
+          87/100
+        </div>
+
       </div>
+
 
       <div class="metrics">
 
@@ -375,24 +779,37 @@ body{
 
       </div>
 
-      <div class="reason">
-        🟢 Trend aligned • 🟢 Volume expansion •
-        🟢 Liquidity sweep • 🟡 Resistance nearby
+
+      <div class="reasons">
+
+        <div class="reason good">✓ Trend</div>
+        <div class="reason good">✓ Volume</div>
+        <div class="reason good">✓ Liquidity Sweep</div>
+        <div class="reason good">✓ BOS</div>
+        <div class="reason warn">⚠ Resistance</div>
+
       </div>
 
     </div>
 
 
-    <div class="setup">
+    <div class="setup" data-mode="swing">
 
       <div class="setup-head">
+
         <div>
           <div class="stock">HDFCBANK</div>
-          <small>Liquidity Sweep • Swing</small>
+          <div class="setup-type">
+            Liquidity Sweep • Swing
+          </div>
         </div>
 
-        <div class="badge yellow">81/100</div>
+        <div class="score-badge score-yellow">
+          81/100
+        </div>
+
       </div>
+
 
       <div class="metrics">
 
@@ -418,9 +835,15 @@ body{
 
       </div>
 
-      <div class="reason">
-        🟢 Market structure • 🟢 Demand zone •
-        🟢 Momentum • 🟡 Confirmation required
+
+      <div class="reasons">
+
+        <div class="reason good">✓ Liquidity</div>
+        <div class="reason good">✓ Demand</div>
+        <div class="reason good">✓ Momentum</div>
+        <div class="reason good">✓ Structure</div>
+        <div class="reason warn">⚠ Confirmation</div>
+
       </div>
 
     </div>
@@ -430,55 +853,397 @@ body{
 
   <section class="section">
 
-    <div class="critic">
+    <div class="ai-card">
 
-      <h3>🧠 AI CRITIC</h3>
+      <div class="ai-title">
+        🧠 AI CRITIC
+      </div>
 
-      <p>
-        The setup has trend, volume and price-action confirmation.
-        Potential resistance is the main risk. Wait for confirmation
-        instead of entering blindly.
-      </p>
+      <div class="ai-text">
+        Setup has multiple confirmations, but confirmation
+        and risk/reward must be checked before an entry.
+        High score does not guarantee profit.
+      </div>
 
       <div class="no-trade">
-        ⚠️ No-trade filter: ACTIVE when risk/reward or confirmation fails
+        ⚠️ NO-TRADE if confirmation or risk/reward fails
       </div>
 
     </div>
 
   </section>
 
+</main>
 
-  <nav class="bottom">
 
-    <button class="nav active">
-      <span>🏠</span>
-      Home
-    </button>
+<!-- SCANNER -->
 
-    <button class="nav">
-      <span>🔎</span>
-      Scanner
-    </button>
+<main id="scanner" class="page">
 
-    <button class="nav">
-      <span>🎯</span>
-      Blueprint
-    </button>
+  <section class="section">
 
-    <button class="nav">
-      <span>⭐</span>
-      Watchlist
-    </button>
+    <div class="section-title">
+      🔎 Stock Scanner
+    </div>
 
-    <button class="nav">
-      <span>📓</span>
-      Journal
-    </button>
+    <div class="section-subtitle">
+      Price Action + Liquidity + Momentum scanner
+    </div>
 
-  </nav>
 
-</div>
+    <div class="scanner-search">
 
-</body>
-  </html>
+      <input
+        id="stockSearch"
+        class="search-box"
+        placeholder="Search stock e.g. RELIANCE"
+        onkeyup="searchStocks()"
+      >
+
+      <button class="search-button">
+        🔎
+      </button>
+
+    </div>
+
+
+    <div id="scannerList">
+
+
+      <div class="scanner-card" data-stock="RELIANCE">
+
+        <div class="scanner-top">
+
+          <div>
+            <div class="scanner-symbol">RELIANCE</div>
+            <div class="scanner-price">
+              Demo price • Swing
+            </div>
+          </div>
+
+          <div class="signal signal-long">
+            STRONG
+          </div>
+
+        </div>
+
+
+        <div class="scanner-grid">
+
+          <div class="scanner-metric">
+            <small>PA</small>
+            <b class="pass">PASS</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>LIQUIDITY</small>
+            <b class="pass">PASS</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>STRUCTURE</small>
+            <b class="pass">BOS</b>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="scanner-card" data-stock="HDFCBANK">
+
+        <div class="scanner-top">
+
+          <div>
+            <div class="scanner-symbol">HDFCBANK</div>
+            <div class="scanner-price">
+              Demo price • Swing
+            </div>
+          </div>
+
+          <div class="signal signal-watch">
+            WATCH
+          </div>
+
+        </div>
+
+
+        <div class="scanner-grid">
+
+          <div class="scanner-metric">
+            <small>PA</small>
+            <b class="pass">PASS</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>LIQUIDITY</small>
+            <b class="pass">SWEEP</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>STRUCTURE</small>
+            <b class="watch">WAIT</b>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="scanner-card" data-stock="TCS">
+
+        <div class="scanner-top">
+
+          <div>
+            <div class="scanner-symbol">TCS</div>
+            <div class="scanner-price">
+              Demo price • Intraday
+            </div>
+          </div>
+
+          <div class="signal signal-avoid">
+            AVOID
+          </div>
+
+        </div>
+
+
+        <div class="scanner-grid">
+
+          <div class="scanner-metric">
+            <small>PA</small>
+            <b class="watch">WEAK</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>LIQUIDITY</small>
+            <b class="fail">FAIL</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>STRUCTURE</small>
+            <b class="fail">FAIL</b>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="scanner-card" data-stock="ICICIBANK">
+
+        <div class="scanner-top">
+
+          <div>
+            <div class="scanner-symbol">ICICIBANK</div>
+            <div class="scanner-price">
+              Demo price • Intraday
+            </div>
+          </div>
+
+          <div class="signal signal-long">
+            WATCH+
+          </div>
+
+        </div>
+
+
+        <div class="scanner-grid">
+
+          <div class="scanner-metric">
+            <small>PA</small>
+            <b class="pass">PASS</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>LIQUIDITY</small>
+            <b class="watch">NEAR</b>
+          </div>
+
+          <div class="scanner-metric">
+            <small>STRUCTURE</small>
+            <b class="pass">HL</b>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- BLUEPRINT -->
+
+<main id="blueprint" class="page">
+
+  <section class="section">
+
+    <div class="section-title">
+      🎯 Trade Blueprint
+    </div>
+
+    <div class="section-subtitle">
+      Example blueprint — not a live trading recommendation.
+    </div>
+
+
+    <div class="blueprint-hero">
+
+      <div class="blueprint-symbol">
+        RELIANCE
+      </div>
+
+      <div class="blueprint-status">
+        Liquidity Sweep + BOS + Retest
+      </div>
+
+      <div class="blueprint-score">
+        87/100
+        <small>SETUP SCORE</small>
+      </div>
+
+
+      <div class="blueprint-grid">
+
+        <div class="blueprint-box">
+          <small>ENTRY TRIGGER</small>
+          <b>Confirmation</b>
+        </div>
+
+        <div class="blueprint-box">
+          <small>STOP LOSS</small>
+          <b>Structure based</b>
+        </div>
+
+        <div class="blueprint-box">
+          <small>TARGET 1</small>
+          <b>Liquidity high</b>
+        </div>
+
+        <div class="blueprint-box">
+          <small>RISK / REWARD</small>
+          <b>1 : 2.4</b>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="engine-card">
+
+      <div class="section-title">
+        🧩 Setup Engine
+      </div>
+
+
+      <div class="engine-row">
+        <div class="engine-name">Price Action</div>
+        <div class="engine-value pass">✓ PASS</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Liquidity</div>
+        <div class="engine-value pass">✓ SWEEP</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Market Structure</div>
+        <div class="engine-value pass">✓ BOS</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Supply / Demand</div>
+        <div class="engine-value pass">✓ DEMAND</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Order Block</div>
+        <div class="engine-value pass">✓ VALID</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">FVG / Imbalance</div>
+        <div class="engine-value watch">◐ WATCH</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Volume</div>
+        <div class="engine-value pass">✓ EXPANSION</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Momentum</div>
+        <div class="engine-value pass">✓ STRONG</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">VWAP</div>
+        <div class="engine-value pass">✓ ALIGNED</div>
+      </div>
+
+      <div class="engine-row">
+        <div class="engine-name">Adaptive EMA</div>
+        <div class="engine-value pass">✓ CONTEXT</div>
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="ai-card">
+
+        <div class="ai-title">
+          🧠 AI Critic
+        </div>
+
+        <div class="ai-text">
+          Positive factors: liquidity sweep, structure break,
+          demand reaction and volume expansion.
+          Risk factor: nearby resistance and incomplete FVG confirmation.
+        </div>
+
+        <div class="no-trade">
+          ⚠️ ENTER ONLY AFTER THE DEFINED CONFIRMATION
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- WATCHLIST -->
+
+<main id="watchlist" class="page">
+
+  <section class="section">
+
+    <div class="section-title">
+      ⭐ Watchlist
+    </div>
+
+    <div class="section-subtitle">
+      Stocks you want to monitor.
+    </div>
+
+
+    <div class="watch-item">
+
+      <div class="watch-left">
+
+        <div class="star">⭐</div>
+
+        <div>
+          <div class="watch-symbol">RELIANCE</div>
+          <div class="watch-info">
+            Swing • Strong setup
+      
