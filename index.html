@@ -108,7 +108,7 @@ button,input,select{font:inherit}button{cursor:pointer}
     <div class="mode-card">
       <div class="mode-name">🟢 Upstox</div>
       <div class="mode-desc">Live quotes + historical candles + India VIX/GIFT NIFTY support available through the broker API. Best fit for our next live-data phase.</div>
-      <button class="primary" onclick="selectProvider('Upstox')">Select Upstox</button>
+      <button class="primary" onclick="selectProvider('Upstox')">Connect Upstox</button>
     </div>
     <div class="mode-card">
       <div class="mode-name">🔵 Zerodha Kite Connect</div>
@@ -145,7 +145,7 @@ function selectProvider(name){
   localStorage.setItem('sb_provider',name);
   document.querySelector('.demo').textContent='DATA: '+name.toUpperCase();
   closeDataModal();
-  alert(name+' selected. Next step: secure API connection + live candles.');
+  if(name==='Upstox'){ window.location.href='/api/upstox/login'; return; } alert(name+' selected. Next step: secure API connection + live candles.');
 }
 function showPage(id,btn){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -189,5 +189,16 @@ document.getElementById('blueprintContent').innerHTML='<div class="blueprint-sym
 }
 function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('show')}
 </script>
-</body>
+<script>
+(function(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('upstox')==='connected'){
+    localStorage.setItem('sb_provider','Upstox');
+    const b=document.querySelector('.demo');
+    if(b)b.textContent='DATA: UPSTOX • LIVE';
+    alert('Upstox connected successfully. Live quote gateway is ready.');
+    history.replaceState({},'',location.pathname);
+  }
+})();
+</script></body>
 </html>
