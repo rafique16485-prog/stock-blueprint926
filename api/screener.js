@@ -27,14 +27,6 @@ async function liveQuotes(keys, token) {
   const d = await api("/v3/market-quote/ltp?instrument_key=" + encodeURIComponent(keys.join(",")), token);
   return d?.data || {};
 }
-  const r = await fetch(BASE + path, {
-    headers: { Accept: "application/json", Authorization: "Bearer " + token }
-  });
-  const data = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(data?.errors?.[0]?.message || data?.message || "Upstox " + r.status);
-  return data;
-}
-
 const clean = s => String(s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 
 async function resolve(symbol, token) {
