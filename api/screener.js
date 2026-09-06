@@ -12,7 +12,21 @@ function json(res, status, body) {
   return res.json(body);
 }
 
-async function api(path, token) {
+async function api(path, token, options = {}) {
+  const r = await fetch(BASE + path, {
+    ...options,
+    headers: { Accept: "application/json", Authorization: "Bearer " + token, ...(options.headers || {}) }
+  });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data?.errors?.[0]?.message || data?.message || "Upstox " + r.status);
+  return data;
+}
+
+async function liveQuotes(keys, token) {
+  if (!keys.length) return {};
+  const d = await api("/v3/market-quote/ltp?instrument_key=" + encodeURIComponent(keys.join(",")), token);
+  return d?.data || {};
+}
   const r = await fetch(BASE + path, {
     headers: { Accept: "application/json", Authorization: "Bearer " + token }
   });
@@ -57,7 +71,7 @@ function atr(rows, n = 14) {
   return tr.slice(-n).reduce((a, b) => a + b, 0) / n;
 }
 
-function analyze(symbol, daily, five) {
+function analyze(symbol, daily, five, livePrice = null) {
   if (daily.length < 21) throw new Error("Insufficient daily history");
   const d = daily.at(-1);
   const prior20 = daily.slice(-21, -1);
@@ -80,8 +94,8 @@ function analyze(symbol, daily, five) {
   score = Math.max(0, Math.min(100, Math.round(score)));
   const setup = score >= 75 ? (d.c > high20 ? "BREAKOUT" : "PULLBACK") : "WAIT";
   const signal = score >= 85 ? "STRONG" : score >= 75 ? "WATCH" : "NO TRADE";
-  const entry = d.c;
-  const sl = Math.max(d.c - 1.2 * a, d.c * 0.97);
+  const entry = Number.isFinite(livePrice) && livePrice > 0 ? livePrice : d.c;
+  const sl = Math.max(entry - 1.2 * a, entry * 0.97);
   const risk = Math.max(entry - sl, entry * 0.005);
   return {
     symbol, price: +d.c.toFixed(2), score, signal, setup,
@@ -105,13 +119,17 @@ module.exports = async function handler(req, res) {
   try {
     const symbols = String(req.query?.symbols || "RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL").split(",").map(s => s.trim().toUpperCase()).filter(Boolean).slice(0, 10);
     const resolved = (await Promise.all(symbols.map(s => resolve(s, token)))).filter(Boolean);
+    let quoteMap = {};
+    try { quoteMap = await liveQuotes(resolved.map(x => x.instrument_key), token); } catch (_) {}
     const rows = await Promise.all(resolved.map(async x => {
       try {
         const [daily, five] = await Promise.all([
           candles(x.instrument_key, "days", "1", 60, token),
           candles(x.instrument_key, "minutes", "5", 1, token)
         ]);
-        return { ...x, ...analyze(x.symbol, norm(daily), norm(five)) };
+        const q = quoteMap[x.instrument_key] || {};
+        const livePrice = Number(q.last_price);
+        return { ...x, ...analyze(x.symbol, norm(daily), norm(five), livePrice) };
       } catch (e) {
         return { ...x, score: 0, signal: "NO TRADE", setup: "WAIT", reason: e.message || "Data unavailable", data_source: "Upstox unavailable" };
       }
@@ -119,7 +137,7 @@ module.exports = async function handler(req, res) {
     rows.sort((a, b) => b.score - a.score);
     return json(res, 200, {
       ok: true, connected: true, provider: "Upstox",
-      engine: "LIVE-V1-5M-SWING",
+      engine: "LIVE-V2-LTP+5M-SWING",
       updated_at: new Date().toISOString(),
       rows
     });
