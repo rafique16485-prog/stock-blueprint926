@@ -1,21 +1,30 @@
+const crypto = require("crypto");
+
 module.exports = async function handler(req, res) {
   const clientId = process.env.UPSTOX_CLIENT_ID;
+  const clientSecret = process.env.UPSTOX_CLIENT_SECRET;
   const redirectUri = process.env.UPSTOX_REDIRECT_URI;
 
-  if (!clientId || !redirectUri) {
+  if (!clientId || !clientSecret || !redirectUri) {
     res.status(500).json({
       ok: false,
-      error: "UPSTOX_CLIENT_ID or UPSTOX_REDIRECT_URI is not configured in Vercel."
+      error: "UPSTOX_CLIENT_ID, UPSTOX_CLIENT_SECRET or UPSTOX_REDIRECT_URI is not configured in Vercel."
     });
     return;
   }
 
-  const state = Math.random().toString(36).slice(2) + Date.now().toString(36);
-  res.setHeader(
-    "Set-Cookie",
-    "upstox_oauth_state=" + encodeURIComponent(state) +
-      "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600"
-  );
+  // Signed, short-lived OAuth state avoids relying on a browser cookie surviving
+  // the external Upstox redirect while still protecting against CSRF.
+  const payload = JSON.stringify({
+    ts: Date.now(),
+    nonce: crypto.randomBytes(16).toString("hex")
+  });
+  const encoded = Buffer.from(payload).toString("base64url");
+  const signature = crypto
+    .createHmac("sha256", clientSecret)
+    .update(encoded)
+    .digest("base64url");
+  const state = encoded + "." + signature;
 
   const url = new URL("https://api.upstox.com/v2/login/authorization/dialog");
   url.searchParams.set("response_type", "code");
