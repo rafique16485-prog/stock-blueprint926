@@ -41,7 +41,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 <section class="market"><div class="market-grid">
 <div class="market-card"><small>NIFTY 50</small><div id="niftyPrice" class="market-price">—</div><small id="niftyChange">Connecting…</small></div>
 <div class="market-card"><small>BANK NIFTY</small><div id="bankPrice" class="market-price">—</div><small id="bankChange">Connecting…</small></div>
-<div class="market-card"><small>INDIA VIX</small><div id="vixPrice" class="market-price">—</div><small id="vixState">Connecting…</small></div>
+<div class="market-card"><small>INDIA VIX</small><div id="vixPrice" class="market-price">—</div><small id="vixState">Connecting…</small></div>\n<div class="market-card"><small>GIFT NIFTY</small><div id="giftPrice" class="market-price">—</div><small id="giftChange">Connecting…</small></div>
 </div></section>
 <div class="regime"><div class="regime-title">MARKET REGIME</div><div class="regime-main"><div class="regime-value">🟢 BULLISH</div><div class="regime-score">78/100</div></div></div>
 
@@ -57,7 +57,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 
 <main id="scanner" class="page">
 <section class="section"><div class="section-title">🔎 Stock Scanner</div><div id="scannerStatus" class="section-subtitle">Upstox live • 5m confirmation • price action + volume</div>
-<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="scanLive()">SCAN</button></div>
+<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="scanLive()">SCAN</button></div>\n<div style="display:flex;gap:7px;margin:-2px 0 10px"><button class="chip" onclick="shareCurrentScan()" style="flex:1">🟢 WhatsApp Share</button><button class="chip" onclick="shareApp()" style="flex:1">📤 Share App</button></div>
 <div class="control-label">Trading style</div><div class="controls"><button class="chip active" onclick="setScanMode(this,'all')">All</button><button class="chip" onclick="setScanMode(this,'scalping')">Scalping</button><button class="chip" onclick="setScanMode(this,'intraday')">Intraday</button><button class="chip" onclick="setScanMode(this,'swing')">Swing</button><button class="chip" onclick="setScanMode(this,'positional')">Positional</button></div>
 <div class="control-label">Timeframe</div><div class="controls"><button class="chip tf-chip active" onclick="setTF(this,'5m')">5m</button><button class="chip tf-chip" onclick="setTF(this,'15m')">15m</button><button class="chip tf-chip" onclick="setTF(this,'1H')">1H</button><button class="chip tf-chip" onclick="setTF(this,'4H')">4H</button><button class="chip tf-chip" onclick="setTF(this,'1D')">1D</button><button class="chip tf-chip" onclick="setTF(this,'1W')">1W</button></div>
 <div class="scanner-summary"><span>Live setups</span><b id="scanCount">—</b><span id="scanTF">5m • All</span></div>
@@ -205,7 +205,7 @@ async function loadLiveMarket(){
     const pct=x=>x&&x.cp?((x.last_price/x.cp-1)*100):null;
     if(n)setMarket('niftyPrice',n.last_price,(pct(n)>=0?'▲ +':'▼ ')+pct(n).toFixed(2)+'%');
     if(b)setMarket('bankPrice',b.last_price,(pct(b)>=0?'▲ +':'▼ ')+pct(b).toFixed(2)+'%');
-    if(v)setMarket('vixPrice',v.last_price,'LIVE');
+    if(v)setMarket('vixPrice',v.last_price,'LIVE');\n    if(g)setMarket('giftPrice',g.last_price,(pct(g)>=0?'▲ +':'▼ ')+pct(g).toFixed(2)+'%');
     setBadge('DATA: UPSTOX • LIVE',true);
     return true;
   }catch(e){
@@ -242,12 +242,12 @@ function renderLiveRows(rows){
     const el=document.createElement('div');
     el.className='scanner-card';el.dataset.stock=s.symbol;el.dataset.signal=s.signal||'wait';el.dataset.mode='swing';
     const scoreClass=s.score>=85?'signal-long':s.score>=75?'signal-watch':'signal-avoid';
-    el.innerHTML='<div class="scanner-top"><div><div class="scanner-symbol">'+s.symbol+'</div><div class="scanner-price">₹'+money(s.price)+' • '+(s.timeframe||scanTF)+' • '+(s.data_source||'Upstox')+'</div></div><div class="signal '+scoreClass+'">'+(s.signal||'NO TRADE')+' '+s.score+'</div></div><div class="scanner-grid"><div class="scanner-metric"><small>TREND</small><b class="'+(s.score>=75?'pass':'watch')+'">'+(s.setup||'WAIT')+'</b></div><div class="scanner-metric"><small>5M VOL</small><b class="'+(s.volume_ratio>=1.5?'pass':'watch')+'">'+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'</b></div><div class="scanner-metric"><small>R:R</small><b class="'+(s.score>=75?'pass':'watch')+'">'+s.rr+'</b></div><div class="scanner-metric"><small>STATUS</small><b class="'+(s.score>=75?'pass':'fail')+'">'+(s.score>=75?'ELIGIBLE':'WAIT')+'</b></div></div><div class="scan-score"><i style="width:'+s.score+'%"></i></div><div class="scan-note">'+(s.reason||'No clean confirmation')+' • '+(s.data_source||'Upstox')+'</div></div>';
-    el.onclick=()=>openSetup(s.symbol);list.appendChild(el);
+    el.innerHTML='<div class="scanner-top"><div><div class="scanner-symbol">'+s.symbol+'</div><div class="scanner-price">₹'+money(s.price)+' • '+(s.timeframe||scanTF)+' • '+(s.data_source||'Upstox')+'</div></div><div style="text-align:right"><div class="signal '+scoreClass+'">'+(s.signal||'NO TRADE')+' '+s.score+'</div><button class="wa-share" style="border:0;background:#dcfce7;color:#166534;border-radius:8px;padding:5px 7px;font-size:9px;font-weight:800;margin-top:5px" onclick="shareRow(event,'+JSON.stringify(s)+')">WhatsApp</button></div></div><div class="scanner-grid"><div class="scanner-metric"><small>TREND</small><b class="'+(s.score>=75?'pass':'watch')+'">'+(s.setup||'WAIT')+'</b></div><div class="scanner-metric"><small>5M VOL</small><b class="'+(s.volume_ratio>=1.5?'pass':'watch')+'">'+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'</b></div><div class="scanner-metric"><small>R:R</small><b class="'+(s.score>=75?'pass':'watch')+'">'+s.rr+'</b></div><div class="scanner-metric"><small>STATUS</small><b class="'+(s.score>=75?'pass':'fail')+'">'+(s.score>=75?'ELIGIBLE':'WAIT')+'</b></div></div><div class="scan-score"><i style="width:'+s.score+'%"></i></div><div class="scan-note">'+(s.reason||'No clean confirmation')+' • '+(s.data_source||'Upstox')+'</div></div>';
+    el.onclick=(ev)=>{if(ev.target.closest('.wa-share'))return;openSetup(s.symbol)};\n    list.appendChild(el);
   });
   searchStocks();
 }
-async function scanLive(){
+function shareTextForRow(s){return '📊 Stock Blueprint Pro\n'+s.symbol+' • '+(s.timeframe||scanTF)+'\nPrice: ₹'+money(s.price)+'\nSignal: '+(s.signal||'NO TRADE')+' • Score '+s.score+'/100\nEntry: ₹'+money(s.entry)+'\nSL: ₹'+money(s.sl)+'\nT1: ₹'+money(s.t1)+'\nT2: ₹'+money(s.t2)+'\nR:R: '+s.rr+'\nVolume: '+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'\nReason: '+(s.reason||'No clean confirmation')+'\n\nFor educational use — verify live market conditions before trading.';}\nfunction shareRow(ev,s){if(ev)ev.stopPropagation();window.open('https://wa.me/?text='+encodeURIComponent(shareTextForRow(s)),'_blank');}\nfunction shareCurrentScan(){const s=liveRows[0];if(s)shareRow(null,s);else window.open('https://wa.me/?text='+encodeURIComponent('📊 Stock Blueprint Pro — Live scanner\nOpen the app to view the latest scan.'),'_blank')}\nfunction shareApp(){const text='📊 Stock Blueprint Pro — Live Indian market scanner\n'+location.href; if(navigator.share){navigator.share({title:'Stock Blueprint Pro',text,url:location.href}).catch(()=>{})}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}}\nasync function scanLive(){
   const status=document.getElementById('scannerStatus');
   const list=document.getElementById('scannerList');
   const count=document.getElementById('scanCount');
