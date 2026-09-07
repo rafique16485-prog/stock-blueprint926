@@ -12,7 +12,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const instrumentKey = (req.query && req.query.instrument_key) || "NSE_INDEX|Nifty 50,NSE_INDEX|India VIX";
+  const instrumentKey = (req.query && req.query.instrument_key) || "NSE_INDEX|Nifty 50,NSE_INDEX|Nifty Bank,NSE_INDEX|India VIX,GLOBAL_INDEX|SGX NIFTY";
   const url = new URL("https://api.upstox.com/v3/market-quote/ltp");
   url.searchParams.set("instrument_key", instrumentKey);
 
