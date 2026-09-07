@@ -52,14 +52,15 @@ async function candles(key, unit, interval, fromDays, token) {
 
 function timeframeConfig(tf) {
   const map = {
-    "5m":  { unit: "minutes", interval: "5",  days: 30,  label: "5m"  },
-    "15m": { unit: "minutes", interval: "15", days: 30,  label: "15m" },
-    "1H":  { unit: "hours",   interval: "1",  days: 90,  label: "1H"  },
-    "4H":  { unit: "hours",   interval: "4",  days: 180, label: "4H"  },
-    "1D":  { unit: "days",    interval: "1",  days: 365, label: "1D"  },
-    "1W":  { unit: "weeks",   interval: "1",  days: 1825,label: "1W"  }
+    "5m":  { unit: "minutes", interval: "5",  days: 30,   label: "5m"  },
+    "15m": { unit: "minutes", interval: "15", days: 30,   label: "15m" },
+    "1H":  { unit: "hours",   interval: "1",  days: 90,   label: "1H"  },
+    "4H":  { unit: "hours",   interval: "4",  days: 180,  label: "4H"  },
+    "1D":  { unit: "days",    interval: "1",  days: 365,  label: "1D"  },
+    "1W":  { unit: "weeks",   interval: "1",  days: 1825, label: "1W"  }
   };
-  return map[tf] || map["5m"];
+  const key = String(tf || "5m").trim();
+  return map[key] || map[key.toLowerCase()] || map["5m"];
 }
 
 function norm(rows) {
@@ -127,7 +128,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const symbols = String(req.query?.symbols || "RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL").split(",").map(s => s.trim().toUpperCase()).filter(Boolean).slice(0, 10);
-    const tf = String(req.query?.tf || "5m").toUpperCase();
+    const tf = String(req.query?.tf || "5m").trim();
     const cfg = timeframeConfig(tf);
     const resolved = (await Promise.all(symbols.map(s => resolve(s, token)))).filter(Boolean);
     let quoteMap = {};
