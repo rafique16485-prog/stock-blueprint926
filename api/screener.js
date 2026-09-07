@@ -50,6 +50,18 @@ async function candles(key, unit, interval, fromDays, token) {
   return Array.isArray(d?.data?.candles) ? d.data.candles : [];
 }
 
+function timeframeConfig(tf) {
+  const map = {
+    "5m":  { unit: "minutes", interval: "5",  days: 30,  label: "5m"  },
+    "15m": { unit: "minutes", interval: "15", days: 30,  label: "15m" },
+    "1H":  { unit: "hours",   interval: "1",  days: 90,  label: "1H"  },
+    "4H":  { unit: "hours",   interval: "4",  days: 180, label: "4H"  },
+    "1D":  { unit: "days",    interval: "1",  days: 365, label: "1D"  },
+    "1W":  { unit: "weeks",   interval: "1",  days: 1825,label: "1W"  }
+  };
+  return map[tf] || map["5m"];
+}
+
 function norm(rows) {
   return rows.map(c => ({
     t: new Date(c[0]).getTime(),
@@ -63,43 +75,48 @@ function atr(rows, n = 14) {
   return tr.slice(-n).reduce((a, b) => a + b, 0) / n;
 }
 
-function analyze(symbol, daily, five, livePrice = null) {
+function analyze(symbol, daily, tfRows, livePrice = null, tfLabel = "5m") {
   if (daily.length < 21) throw new Error("Insufficient daily history");
+  if (tfRows.length < 8) throw new Error("Insufficient " + tfLabel + " history");
   const d = daily.at(-1);
   const prior20 = daily.slice(-21, -1);
-  const prior5 = five.slice(-7, -1);
+  const latest = tfRows.at(-1);
+  const priorTf = tfRows.slice(-7, -1);
   const high20 = Math.max(...prior20.map(x => x.h));
   const low20 = Math.min(...prior20.map(x => x.l));
   const avgVol20 = prior20.reduce((s, x) => s + x.v, 0) / prior20.length;
-  const latest5 = five.at(-1);
-  const avgVol5 = prior5.length ? prior5.reduce((s, x) => s + x.v, 0) / prior5.length : 0;
+  const highTf = Math.max(...priorTf.map(x => x.h));
+  const avgVolTf = priorTf.length ? priorTf.reduce((s, x) => s + x.v, 0) / priorTf.length : 0;
   const a = atr(daily) || d.c * 0.02;
   let score = 50, reasons = [];
-  if (d.c > high20) { score += 25; reasons.push("20D breakout"); }
-  else if (d.c > Math.max(...daily.slice(-6, -1).map(x => x.h))) { score += 12; reasons.push("short-term strength"); }
+  if (latest.c > highTf) { score += 18; reasons.push(tfLabel + " breakout"); }
+  else if (latest.c > Math.max(...tfRows.slice(-6, -1).map(x => x.h))) { score += 10; reasons.push(tfLabel + " strength"); }
   if (d.c > daily.at(-21).c) { score += 10; reasons.push("daily trend up"); }
-  if (d.c < low20) { score -= 30; reasons.push("20D breakdown"); }
-  if (avgVol20 && d.v > avgVol20 * 1.5) { score += d.c >= d.o ? 10 : -10; reasons.push("daily volume expansion"); }
-  const volRatio = avgVol5 && latest5 ? latest5.v / avgVol5 : null;
-  if (latest5?.c > latest5?.o) { score += 5; reasons.push("5m bullish"); }
-  if (volRatio && volRatio >= 1.5) { score += 10; reasons.push("5m volume surge"); }
+  else if (d.c < daily.at(-21).c) { score -= 8; reasons.push("daily trend weak"); }
+  if (d.c < low20) { score -= 25; reasons.push("20D breakdown"); }
+  if (avgVol20 && d.v > avgVol20 * 1.5) { score += d.c >= d.o ? 8 : -8; reasons.push("daily volume expansion"); }
+  const volRatio = avgVolTf && latest ? latest.v / avgVolTf : null;
+  if (latest.c > latest.o) { score += 5; reasons.push(tfLabel + " bullish"); }
+  else if (latest.c < latest.o) { score -= 3; reasons.push(tfLabel + " bearish"); }
+  if (volRatio && volRatio >= 1.5) { score += 10; reasons.push(tfLabel + " volume surge"); }
   score = Math.max(0, Math.min(100, Math.round(score)));
-  const setup = score >= 75 ? (d.c > high20 ? "BREAKOUT" : "PULLBACK") : "WAIT";
+  const setup = score >= 75 ? (latest.c > highTf ? "BREAKOUT" : "PULLBACK") : "WAIT";
   const signal = score >= 85 ? "STRONG" : score >= 75 ? "WATCH" : "NO TRADE";
-  const entry = Number.isFinite(livePrice) && livePrice > 0 ? livePrice : d.c;
+  const entry = Number.isFinite(livePrice) && livePrice > 0 ? livePrice : latest.c;
   const sl = Math.max(entry - 1.2 * a, entry * 0.97);
   const risk = Math.max(entry - sl, entry * 0.005);
   return {
-    symbol, price: +d.c.toFixed(2), score, signal, setup,
+    symbol, price: +entry.toFixed(2), score, signal, setup,
     entry: +entry.toFixed(2), sl: +sl.toFixed(2),
     t1: +(entry + risk * 1.5).toFixed(2),
     t2: +(entry + risk * 2.2).toFixed(2),
     t3: +(entry + risk * 3).toFixed(2),
     rr: "1:2.2",
     volume_ratio: volRatio ? +volRatio.toFixed(2) : null,
+    timeframe: tfLabel,
     reason: reasons.join(" + ") || "No clean confirmation",
-    data_source: "Upstox live session + V3 candles",
-    candle_time: latest5 ? new Date(latest5.t).toISOString() : null
+    data_source: "Upstox live LTP + V3 " + tfLabel + " candles",
+    candle_time: latest ? new Date(latest.t).toISOString() : null
   };
 }
 
@@ -110,18 +127,26 @@ module.exports = async function handler(req, res) {
 
   try {
     const symbols = String(req.query?.symbols || "RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL").split(",").map(s => s.trim().toUpperCase()).filter(Boolean).slice(0, 10);
+    const tf = String(req.query?.tf || "5m").toUpperCase();
+    const cfg = timeframeConfig(tf);
     const resolved = (await Promise.all(symbols.map(s => resolve(s, token)))).filter(Boolean);
     let quoteMap = {};
-    try { quoteMap = await liveQuotes(resolved.map(x => x.instrument_key), token); } catch (_) {}
+    try {
+      const rawQuotes = await liveQuotes(resolved.map(x => x.instrument_key), token);
+      for (const [key, value] of Object.entries(rawQuotes || {})) {
+        quoteMap[key] = value;
+        if (value?.instrument_token) quoteMap[value.instrument_token] = value;
+      }
+    } catch (_) {}
     const rows = await Promise.all(resolved.map(async x => {
       try {
-        const [daily, five] = await Promise.all([
+        const [daily, tfCandles] = await Promise.all([
           candles(x.instrument_key, "days", "1", 60, token),
-          candles(x.instrument_key, "minutes", "5", 1, token)
+          candles(x.instrument_key, cfg.unit, cfg.interval, cfg.days, token)
         ]);
         const q = quoteMap[x.instrument_key] || {};
         const livePrice = Number(q.last_price);
-        return { ...x, ...analyze(x.symbol, norm(daily), norm(five), livePrice) };
+        return { ...x, ...analyze(x.symbol, norm(daily), norm(tfCandles), livePrice, cfg.label) };
       } catch (e) {
         return { ...x, score: 0, signal: "NO TRADE", setup: "WAIT", reason: e.message || "Data unavailable", data_source: "Upstox unavailable" };
       }
@@ -129,7 +154,8 @@ module.exports = async function handler(req, res) {
     rows.sort((a, b) => b.score - a.score);
     return json(res, 200, {
       ok: true, connected: true, provider: "Upstox",
-      engine: "LIVE-V2-LTP+5M-SWING",
+      engine: "LIVE-V3-LTP+" + cfg.label + "-SCANNER",
+      timeframe: cfg.label,
       updated_at: new Date().toISOString(),
       rows
     });
