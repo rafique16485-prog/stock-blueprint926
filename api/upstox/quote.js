@@ -6,9 +6,16 @@ module.exports = async function handler(req, res) {
     })
   );
 
-  const token = cookies.upstox_access_token;
+  const token =
+    cookies.upstox_access_token ||
+    process.env.UPSTOX_ANALYTICS_TOKEN;
+
   if (!token) {
-    res.status(401).json({ ok: false, connected: false, error: "Upstox is not connected." });
+    res.status(401).json({
+      ok: false,
+      connected: false,
+      error: "Upstox token missing. Add UPSTOX_ANALYTICS_TOKEN in Vercel, or connect via OAuth."
+    });
     return;
   }
 
@@ -30,5 +37,11 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  res.status(200).json({ ok: true, connected: true, provider: "Upstox", data: data.data });
+  res.status(200).json({
+    ok: true,
+    connected: true,
+    provider: "Upstox",
+    auth: cookies.upstox_access_token ? "oauth" : "analytics_token",
+    data: data.data
+  });
 };
