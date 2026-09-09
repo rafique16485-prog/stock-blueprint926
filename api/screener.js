@@ -55,7 +55,7 @@ function timeframeConfig(tf) {
     "5m":  { unit: "minutes", interval: "5",  days: 30,   label: "5m"  },
     "15m": { unit: "minutes", interval: "15", days: 30,   label: "15m" },
     "1H":  { unit: "hours",   interval: "1",  days: 90,   label: "1H"  },
-    "4H":  { unit: "hours",   interval: "4",  days: 180,  label: "4H"  },
+    "4H":  { unit: "hours",   interval: "4",  days: 90,   label: "4H"  },
     "1D":  { unit: "days",    interval: "1",  days: 365,  label: "1D"  },
     "1W":  { unit: "weeks",   interval: "1",  days: 1825, label: "1W"  }
   };
@@ -123,8 +123,17 @@ function analyze(symbol, daily, tfRows, livePrice = null, tfLabel = "5m") {
 
 module.exports = async function handler(req, res) {
   if (req.method !== "GET") return json(res, 405, { ok: false, error: "GET only" });
-  const token = cookies(req).upstox_access_token;
-  if (!token) return json(res, 401, { ok: false, connected: false, error: "Connect Upstox first." });
+  const token =
+    cookies(req).upstox_access_token ||
+    process.env.UPSTOX_ANALYTICS_TOKEN;
+
+  if (!token) {
+    return json(res, 401, {
+      ok: false,
+      connected: false,
+      error: "Upstox token missing. Add UPSTOX_ANALYTICS_TOKEN in Vercel, or connect via OAuth."
+    });
+  }
 
   try {
     const symbols = String(req.query?.symbols || "RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL").split(",").map(s => s.trim().toUpperCase()).filter(Boolean).slice(0, 10);
@@ -155,6 +164,7 @@ module.exports = async function handler(req, res) {
     rows.sort((a, b) => b.score - a.score);
     return json(res, 200, {
       ok: true, connected: true, provider: "Upstox",
+      auth: cookies(req).upstox_access_token ? "oauth" : "analytics_token",
       engine: "LIVE-V3-LTP+" + cfg.label + "-SCANNER",
       timeframe: cfg.label,
       updated_at: new Date().toISOString(),
