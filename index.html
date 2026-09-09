@@ -37,11 +37,11 @@ button,input,select{font:inherit}button{cursor:pointer}
 </head>
 <body>
 <div class="app">
-<header class="header"><div class="logo">🧠 Smart Money AI Pro</div><button id="dataBadge" class="demo" onclick="openDataModal()">DATA: UPSTOX • CONNECT</button></header>
+<header class="header"><div class="logo">🧠 Smart Money AI Pro</div><button id="dataBadge" class="demo" onclick="openDataModal()">DATA: DEMO • LIVE OFF</button></header>
 <section class="market"><div class="market-grid">
 <div class="market-card"><small>NIFTY 50</small><div id="niftyPrice" class="market-price">—</div><small id="niftyChange">Connecting…</small></div>
 <div class="market-card"><small>BANK NIFTY</small><div id="bankPrice" class="market-price">—</div><small id="bankChange">Connecting…</small></div>
-<div class="market-card"><small>INDIA VIX</small><div id="vixPrice" class="market-price">—</div><small id="vixState">Connecting…</small></div>\n<div class="market-card"><small>GIFT NIFTY</small><div id="giftPrice" class="market-price">—</div><small id="giftChange">Connecting…</small></div>
+<div class="market-card"><small>INDIA VIX</small><div id="vixPrice" class="market-price">—</div><small id="vixState">Connecting…</small></div><div class="market-card"><small>GIFT NIFTY</small><div id="giftPrice" class="market-price">—</div><small id="giftChange">Connecting…</small></div>
 </div></section>
 <div class="regime"><div class="regime-title">MARKET REGIME</div><div class="regime-main"><div class="regime-value">🟢 BULLISH</div><div class="regime-score">78/100</div></div></div>
 
@@ -57,7 +57,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 
 <main id="scanner" class="page">
 <section class="section"><div class="section-title">🔎 Stock Scanner</div><div id="scannerStatus" class="section-subtitle">Upstox live • 5m confirmation • price action + volume</div>
-<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="scanLive()">SCAN</button></div>\n<div style="display:flex;gap:7px;margin:-2px 0 10px"><button class="chip" onclick="shareCurrentScan()" style="flex:1">🟢 WhatsApp Share</button><button class="chip" onclick="shareApp()" style="flex:1">📤 Share App</button></div>
+<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="scanLive()">SCAN</button></div><div style="display:flex;gap:7px;margin:-2px 0 10px"><button class="chip" onclick="shareCurrentScan()" style="flex:1">🟢 WhatsApp Share</button><button class="chip" onclick="shareApp()" style="flex:1">📤 Share App</button></div>
 <div class="control-label">Trading style</div><div class="controls"><button class="chip active" onclick="setScanMode(this,'all')">All</button><button class="chip" onclick="setScanMode(this,'scalping')">Scalping</button><button class="chip" onclick="setScanMode(this,'intraday')">Intraday</button><button class="chip" onclick="setScanMode(this,'swing')">Swing</button><button class="chip" onclick="setScanMode(this,'positional')">Positional</button></div>
 <div class="control-label">Timeframe</div><div class="controls"><button class="chip tf-chip active" onclick="setTF(this,'5m')">5m</button><button class="chip tf-chip" onclick="setTF(this,'15m')">15m</button><button class="chip tf-chip" onclick="setTF(this,'1H')">1H</button><button class="chip tf-chip" onclick="setTF(this,'4H')">4H</button><button class="chip tf-chip" onclick="setTF(this,'1D')">1D</button><button class="chip tf-chip" onclick="setTF(this,'1W')">1W</button></div>
 <div class="scanner-summary"><span>Live setups</span><b id="scanCount">—</b><span id="scanTF">5m • All</span></div>
@@ -205,11 +205,12 @@ async function loadLiveMarket(){
     const pct=x=>x&&x.cp?((x.last_price/x.cp-1)*100):null;
     if(n)setMarket('niftyPrice',n.last_price,(pct(n)>=0?'▲ +':'▼ ')+pct(n).toFixed(2)+'%');
     if(b)setMarket('bankPrice',b.last_price,(pct(b)>=0?'▲ +':'▼ ')+pct(b).toFixed(2)+'%');
-    if(v)setMarket('vixPrice',v.last_price,'LIVE');\n    // GIFT NIFTY will be connected in the live-data phase.
+    if(v)setMarket('vixPrice',v.last_price,'LIVE');
+    // GIFT NIFTY will be connected in the live-data phase.
     setBadge('DATA: UPSTOX • LIVE',true);
     return true;
   }catch(e){
-    setBadge('DATA: UPSTOX • CONNECT',false);
+    setBadge('DATA: DEMO • LIVE OFF',false);
     return false;
   }
 }
