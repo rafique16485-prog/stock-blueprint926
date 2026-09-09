@@ -2444,7 +2444,7 @@ const r=
 await fetch(
 '/api/upstox/quote?instrument_key='+
 encodeURIComponent(
-'NSE_INDEX|Nifty 50,NSE_INDEX|Nifty Bank,NSE_INDEX|India VIX'
+'NSE_INDEX|Nifty 50,NSE_INDEX|Nifty Bank,NSE_INDEX|India VIX,GLOBAL_INDEX|SGX NIFTY'
 ),
 {
 cache:'no-store'
@@ -2503,6 +2503,9 @@ pick('Nifty Bank');
 
 const v=
 pick('India VIX');
+
+const g=
+pick('GIFT NIFTY',['SGX NIFTY']);
 
 
 const pct=(x)=>{
@@ -2572,6 +2575,16 @@ setMarket(
 'vixPrice',
 v.last_price,
 'LIVE'
+);
+
+}
+
+if(g){
+
+setMarket(
+'giftPrice',
+g.last_price,
+'LIVE • 120s'
 );
 
 }
@@ -3510,9 +3523,11 @@ location.pathname
 }
 
 
-loadLiveMarket();
-
+loadLiveMarket().then(live=>{
+if(live){
 scanLive();
+}
+});
 
 
 setInterval(
