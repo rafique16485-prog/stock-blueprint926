@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Stock Blueprint Pro</title>
+<title>Smart Money AI Pro</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,Helvetica,sans-serif;background:#eef1f5;color:#111827}
@@ -37,7 +37,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 </head>
 <body>
 <div class="app">
-<header class="header"><div class="logo">📊 Stock Blueprint</div><button id="dataBadge" class="demo" onclick="openDataModal()">DATA: UPSTOX • CONNECT</button></header>
+<header class="header"><div class="logo">🧠 Smart Money AI Pro</div><button id="dataBadge" class="demo" onclick="openDataModal()">DATA: UPSTOX • CONNECT</button></header>
 <section class="market"><div class="market-grid">
 <div class="market-card"><small>NIFTY 50</small><div id="niftyPrice" class="market-price">—</div><small id="niftyChange">Connecting…</small></div>
 <div class="market-card"><small>BANK NIFTY</small><div id="bankPrice" class="market-price">—</div><small id="bankChange">Connecting…</small></div>
@@ -205,7 +205,7 @@ async function loadLiveMarket(){
     const pct=x=>x&&x.cp?((x.last_price/x.cp-1)*100):null;
     if(n)setMarket('niftyPrice',n.last_price,(pct(n)>=0?'▲ +':'▼ ')+pct(n).toFixed(2)+'%');
     if(b)setMarket('bankPrice',b.last_price,(pct(b)>=0?'▲ +':'▼ ')+pct(b).toFixed(2)+'%');
-    if(v)setMarket('vixPrice',v.last_price,'LIVE');\n    if(g)setMarket('giftPrice',g.last_price,(pct(g)>=0?'▲ +':'▼ ')+pct(g).toFixed(2)+'%');
+    if(v)setMarket('vixPrice',v.last_price,'LIVE');\n    // GIFT NIFTY will be connected in the live-data phase.
     setBadge('DATA: UPSTOX • LIVE',true);
     return true;
   }catch(e){
@@ -247,7 +247,7 @@ function renderLiveRows(rows){
   });
   searchStocks();
 }
-function shareTextForRow(s){return '📊 Stock Blueprint Pro\n'+s.symbol+' • '+(s.timeframe||scanTF)+'\nPrice: ₹'+money(s.price)+'\nSignal: '+(s.signal||'NO TRADE')+' • Score '+s.score+'/100\nEntry: ₹'+money(s.entry)+'\nSL: ₹'+money(s.sl)+'\nT1: ₹'+money(s.t1)+'\nT2: ₹'+money(s.t2)+'\nR:R: '+s.rr+'\nVolume: '+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'\nReason: '+(s.reason||'No clean confirmation')+'\n\nFor educational use — verify live market conditions before trading.';}\nfunction shareRow(ev,s){if(ev)ev.stopPropagation();window.open('https://wa.me/?text='+encodeURIComponent(shareTextForRow(s)),'_blank');}\nfunction shareCurrentScan(){const s=liveRows[0];if(s)shareRow(null,s);else window.open('https://wa.me/?text='+encodeURIComponent('📊 Stock Blueprint Pro — Live scanner\nOpen the app to view the latest scan.'),'_blank')}\nfunction shareApp(){const text='📊 Stock Blueprint Pro — Live Indian market scanner\n'+location.href; if(navigator.share){navigator.share({title:'Stock Blueprint Pro',text,url:location.href}).catch(()=>{})}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}}\nasync function scanLive(){
+function shareTextForRow(s){return '📊 Smart Money AI Pro\n'+s.symbol+' • '+(s.timeframe||scanTF)+'\nPrice: ₹'+money(s.price)+'\nSignal: '+(s.signal||'NO TRADE')+' • Score '+s.score+'/100\nEntry: ₹'+money(s.entry)+'\nSL: ₹'+money(s.sl)+'\nT1: ₹'+money(s.t1)+'\nT2: ₹'+money(s.t2)+'\nR:R: '+s.rr+'\nVolume: '+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'\nReason: '+(s.reason||'No clean confirmation')+'\n\nFor educational use — verify live market conditions before trading.';}\nfunction shareRow(ev,s){if(ev)ev.stopPropagation();window.open('https://wa.me/?text='+encodeURIComponent(shareTextForRow(s)),'_blank');}\nfunction shareCurrentScan(){const s=liveRows[0];if(s)shareRow(null,s);else window.open('https://wa.me/?text='+encodeURIComponent('📊 Smart Money AI Pro — Live scanner\nOpen the app to view the latest scan.'),'_blank')}\nfunction shareApp(){const text='📊 Smart Money AI Pro — Live Indian market scanner\n'+location.href; if(navigator.share){navigator.share({title:'Smart Money AI Pro',text,url:location.href}).catch(()=>{})}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}}\nasync function scanLive(){
   const status=document.getElementById('scannerStatus');
   const list=document.getElementById('scannerList');
   const count=document.getElementById('scanCount');
@@ -264,7 +264,7 @@ function shareTextForRow(s){return '📊 Stock Blueprint Pro\n'+s.symbol+' • '
     if(!r.ok||!d.ok)throw new Error(d.error||'Live scanner unavailable');
     renderLiveRows(d.rows||[]);
     renderHomeRows(d.rows||[]);
-    if(status)status.textContent='LIVE • Upstox V3 • '+scanTF+' • updated '+new Date(d.updated_at).toLocaleTimeString();
+    if(status)status.textContent='LIVE • Upstox • '+scanTF+' • updated '+new Date(d.updated_at).toLocaleTimeString();
     if(count)count.textContent=(d.rows||[]).length;
     setBadge('DATA: UPSTOX • LIVE',true);
   }catch(e){
