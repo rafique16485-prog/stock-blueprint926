@@ -4,299 +4,3525 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Smart Money AI Pro</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:#eef1f5;color:#111827}
-button,input,select{font:inherit}button{cursor:pointer}
-.app{width:100%;max-width:480px;min-height:100vh;margin:auto;background:#fff;padding-bottom:82px}
-.header{padding:16px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:20px;font-weight:800}.demo{font-size:10px;font-weight:800;padding:7px 9px;border-radius:20px;background:#fff3cd;color:#856404}
-.market{padding:0 16px}.market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.market-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:11px}.market-card small{color:#6b7280;font-size:10px}.market-price{margin-top:5px;font-size:15px;font-weight:800}.up{color:#059669}.down{color:#dc2626}
-.regime{margin:12px 16px;padding:14px;border-radius:16px;background:#ecfdf5;border:1px solid #a7f3d0}.regime-title{font-size:10px;color:#6b7280;font-weight:700}.regime-main{display:flex;justify-content:space-between;align-items:center;margin-top:5px}.regime-value,.regime-score{font-size:19px;font-weight:800}
-.page{display:none}.page.active{display:block}.filter-area{padding:4px 16px 0}.filters{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}.filters::-webkit-scrollbar,.hscroll::-webkit-scrollbar{display:none}
-.filter,.chip{border:1px solid #e5e7eb;background:#fff;padding:8px 12px;border-radius:22px;white-space:nowrap;font-size:11px;color:#374151}.filter.active,.chip.active{background:#111827;color:#fff;border-color:#111827}
-.section{padding:0 16px;margin-top:18px}.section-title{font-size:16px;font-weight:800;margin-bottom:10px}.section-subtitle{font-size:11px;color:#6b7280;margin:-5px 0 11px}
-.setup{border:1px solid #e5e7eb;border-radius:17px;padding:14px;margin-bottom:10px;background:#fff}.setup:active,.scanner-card:active,.watch-item:active{background:#f8fafc;transform:scale(.99)}
-.setup-head,.scanner-top,.journal-top{display:flex;justify-content:space-between;align-items:flex-start}.stock{font-size:17px;font-weight:800}.setup-type{margin-top:3px;font-size:11px;color:#6b7280}
-.score-badge,.signal{padding:6px 8px;border-radius:11px;font-size:10px;font-weight:800}.score-green,.signal-long{background:#dcfce7;color:#166534}.score-yellow,.signal-watch{background:#fef3c7;color:#92400e}.signal-avoid{background:#fee2e2;color:#991b1b}
-.metrics,.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.metric{text-align:center;padding:9px 4px;background:#f8fafc;border-radius:10px}.metric small,.detail small{display:block;color:#6b7280;font-size:9px}.metric b{display:block;margin-top:3px;font-size:11px}
-.reasons{margin-top:11px;display:flex;flex-wrap:wrap;gap:5px}.reason{font-size:9px;padding:5px 7px;border-radius:8px;background:#f3f4f6;color:#374151}.reason.good{background:#ecfdf5;color:#166534}.reason.warn{background:#fff7ed;color:#9a3412}
-.ai-card{background:#111827;color:#fff;border-radius:17px;padding:15px}.ai-title{font-size:14px;font-weight:800}.ai-text{margin-top:9px;font-size:11px;line-height:1.6;color:#d1d5db}.no-trade{margin-top:11px;background:#fff1f2;color:#9f1239;border-radius:10px;padding:10px;font-size:10px;font-weight:800}
-.controls{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin-bottom:10px}.control-label{font-size:9px;color:#6b7280;font-weight:800;margin:10px 0 6px;text-transform:uppercase}.scanner-search{display:flex;gap:8px;margin-bottom:10px}.search-box{flex:1;border:1px solid #d1d5db;border-radius:11px;padding:11px;outline:none;font-size:12px}.search-button{border:0;background:#111827;color:#fff;border-radius:11px;padding:0 14px}
-.scanner-summary{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:10px;margin-bottom:10px;font-size:10px}.scanner-summary b{font-size:12px}.scanner-card{border:1px solid #e5e7eb;border-radius:15px;padding:13px;margin-bottom:8px}.scanner-symbol{font-weight:800;font-size:15px}.scanner-price{font-size:12px;color:#6b7280;margin-top:3px}.scanner-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.scanner-metric{background:#f8fafc;padding:8px 4px;border-radius:8px;text-align:center}.scanner-metric small{display:block;font-size:8px;color:#6b7280}.scanner-metric b{font-size:10px}.pass{color:#059669}.watch{color:#d97706}.fail{color:#dc2626}.scan-score{margin-top:10px;height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden}.scan-score i{display:block;height:100%;background:#111827;border-radius:99px}.scan-note{font-size:9px;color:#6b7280;margin-top:7px;line-height:1.4}
-.blueprint-hero{background:#111827;color:#fff;border-radius:18px;padding:16px}.blueprint-symbol{font-size:21px;font-weight:800}.blueprint-status{margin-top:4px;color:#d1d5db;font-size:11px}.blueprint-score{margin-top:14px;font-size:28px;font-weight:800}.blueprint-score small{font-size:11px;color:#9ca3af}.blueprint-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}.blueprint-box{background:#f8fafc;color:#111827;padding:11px;border-radius:10px}.blueprint-box b{display:block;margin-top:4px;font-size:14px}
-.engine-card{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin-top:10px}.engine-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f0f0f0}.engine-row:last-child{border-bottom:0}.engine-name{font-size:11px;font-weight:700}.engine-value{font-size:10px;font-weight:800}
-.mode-card{border:1px solid #e5e7eb;border-radius:15px;padding:13px;margin-top:10px}.mode-head{display:flex;justify-content:space-between}.mode-name{font-weight:800;font-size:13px}.mode-desc{font-size:10px;color:#6b7280;margin-top:4px}.tf-row{display:flex;gap:6px;overflow-x:auto;margin-top:10px}.tf{border:1px solid #e5e7eb;background:#fff;border-radius:9px;padding:7px 9px;font-size:10px}.tf.active{background:#111827;color:#fff;border-color:#111827}
-.watch-item,.journal-card{border:1px solid #e5e7eb;border-radius:14px;padding:13px;margin-bottom:8px}.watch-item{display:flex;align-items:center;justify-content:space-between}.watch-left{display:flex;align-items:center;gap:10px}.star{font-size:18px}.watch-symbol,.journal-symbol{font-size:14px;font-weight:800}.watch-info,.journal-info{font-size:10px;color:#6b7280;margin-top:3px}.watch-price{text-align:right;font-size:12px;font-weight:800}.journal-result{font-size:11px;font-weight:800}.profit{color:#059669}.loss{color:#dc2626}
-.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:67px;background:#fff;border-top:1px solid #e5e7eb;display:grid;grid-template-columns:repeat(5,1fr);z-index:100}.nav{border:0;background:#fff;color:#6b7280;font-size:9px}.nav-icon{display:block;font-size:18px;margin-bottom:3px}.nav.active{color:#111827;font-weight:800}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:200}.modal.show{display:flex}.modal-box{width:100%;max-width:480px;background:#fff;border-radius:22px 22px 0 0;padding:18px;max-height:84vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center}.modal-title{font-size:18px;font-weight:800}.close{border:0;background:#f3f4f6;border-radius:50%;width:34px;height:34px;font-size:18px}.detail-grid{grid-template-columns:repeat(2,1fr)}.detail{background:#f8fafc;border-radius:12px;padding:12px}.detail b{display:block;margin-top:4px;font-size:14px}.primary{width:100%;border:0;background:#111827;color:#fff;border-radius:12px;padding:12px;margin-top:14px;font-weight:800}
-.toggle{display:flex;align-items:center;gap:7px;font-size:10px;color:#374151}.toggle input{width:17px;height:17px}
-@media(min-width:600px){body{padding:20px 0}.app{border-radius:25px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.1)}.bottom{border-radius:0 0 25px 25px}}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#eef1f5;
+  color:#111827
+}
+
+button,input,select{
+  font:inherit
+}
+
+button{
+  cursor:pointer
+}
+
+.app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  margin:auto;
+  background:#fff;
+  padding-bottom:82px
+}
+
+.header{
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.logo{
+  font-size:20px;
+  font-weight:800
+}
+
+.demo{
+  font-size:10px;
+  font-weight:800;
+  padding:7px 9px;
+  border-radius:20px;
+  background:#fff3cd;
+  color:#856404;
+  border:1px solid #ead9a3
+}
+
+.market{
+  padding:0 16px
+}
+
+.market-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px
+}
+
+.market-card{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:11px
+}
+
+.market-card small{
+  color:#6b7280;
+  font-size:10px
+}
+
+.market-price{
+  margin-top:5px;
+  font-size:15px;
+  font-weight:800
+}
+
+.up{
+  color:#059669
+}
+
+.down{
+  color:#dc2626
+}
+
+.regime{
+  margin:12px 16px;
+  padding:14px;
+  border-radius:16px;
+  background:#ecfdf5;
+  border:1px solid #a7f3d0
+}
+
+.regime-title{
+  font-size:10px;
+  color:#6b7280;
+  font-weight:700
+}
+
+.regime-main{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:5px
+}
+
+.regime-value,
+.regime-score{
+  font-size:19px;
+  font-weight:800
+}
+
+.page{
+  display:none
+}
+
+.page.active{
+  display:block
+}
+
+.filter-area{
+  padding:4px 16px 0
+}
+
+.filters{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  scrollbar-width:none
+}
+
+.filters::-webkit-scrollbar,
+.hscroll::-webkit-scrollbar,
+.controls::-webkit-scrollbar,
+.tf-row::-webkit-scrollbar{
+  display:none
+}
+
+.filter,
+.chip{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  padding:8px 12px;
+  border-radius:22px;
+  white-space:nowrap;
+  font-size:11px;
+  color:#374151
+}
+
+.filter.active,
+.chip.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827
+}
+
+.section{
+  padding:0 16px;
+  margin-top:18px
+}
+
+.section-title{
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:10px
+}
+
+.section-subtitle{
+  font-size:11px;
+  color:#6b7280;
+  margin:-5px 0 11px
+}
+
+.setup{
+  border:1px solid #e5e7eb;
+  border-radius:17px;
+  padding:14px;
+  margin-bottom:10px;
+  background:#fff
+}
+
+.setup:active,
+.scanner-card:active,
+.watch-item:active{
+  background:#f8fafc;
+  transform:scale(.99)
+}
+
+.setup-head,
+.scanner-top,
+.journal-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start
+}
+
+.stock{
+  font-size:17px;
+  font-weight:800
+}
+
+.setup-type{
+  margin-top:3px;
+  font-size:11px;
+  color:#6b7280
+}
+
+.score-badge,
+.signal{
+  padding:6px 8px;
+  border-radius:11px;
+  font-size:10px;
+  font-weight:800
+}
+
+.score-green,
+.signal-long{
+  background:#dcfce7;
+  color:#166534
+}
+
+.score-yellow,
+.signal-watch{
+  background:#fef3c7;
+  color:#92400e
+}
+
+.score-neutral{
+  background:#f3f4f6;
+  color:#374151
+}
+
+.signal-avoid{
+  background:#fee2e2;
+  color:#991b1b
+}
+
+.metrics,
+.detail-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-top:12px
+}
+
+.metric{
+  text-align:center;
+  padding:9px 4px;
+  background:#f8fafc;
+  border-radius:10px
+}
+
+.metric small,
+.detail small{
+  display:block;
+  color:#6b7280;
+  font-size:9px
+}
+
+.metric b{
+  display:block;
+  margin-top:3px;
+  font-size:11px
+}
+
+.reasons{
+  margin-top:11px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px
+}
+
+.reason{
+  font-size:9px;
+  padding:5px 7px;
+  border-radius:8px;
+  background:#f3f4f6;
+  color:#374151
+}
+
+.reason.good{
+  background:#ecfdf5;
+  color:#166534
+}
+
+.reason.warn{
+  background:#fff7ed;
+  color:#9a3412
+}
+
+.ai-card{
+  background:#111827;
+  color:#fff;
+  border-radius:17px;
+  padding:15px
+}
+
+.ai-title{
+  font-size:14px;
+  font-weight:800
+}
+
+.ai-text{
+  margin-top:9px;
+  font-size:11px;
+  line-height:1.6;
+  color:#d1d5db
+}
+
+.no-trade{
+  margin-top:11px;
+  background:#fff1f2;
+  color:#9f1239;
+  border-radius:10px;
+  padding:10px;
+  font-size:10px;
+  font-weight:800
+}
+
+.controls{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  margin-bottom:10px
+}
+
+.control-label{
+  font-size:9px;
+  color:#6b7280;
+  font-weight:800;
+  margin:10px 0 6px;
+  text-transform:uppercase
+}
+
+.scanner-search{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px
+}
+
+.search-box{
+  flex:1;
+  border:1px solid #d1d5db;
+  border-radius:11px;
+  padding:11px;
+  outline:none;
+  font-size:12px
+}
+
+.search-button{
+  border:0;
+  background:#111827;
+  color:#fff;
+  border-radius:11px;
+  padding:0 14px
+}
+
+.scanner-summary{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:10px;
+  font-size:10px
+}
+
+.scanner-summary b{
+  font-size:12px
+}
+
+.scanner-card{
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:13px;
+  margin-bottom:8px
+}
+
+.scanner-symbol{
+  font-weight:800;
+  font-size:15px
+}
+
+.scanner-price{
+  font-size:12px;
+  color:#6b7280;
+  margin-top:3px
+}
+
+.scanner-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-top:10px
+}
+
+.scanner-metric{
+  background:#f8fafc;
+  padding:8px 4px;
+  border-radius:8px;
+  text-align:center
+}
+
+.scanner-metric small{
+  display:block;
+  font-size:8px;
+  color:#6b7280
+}
+
+.scanner-metric b{
+  font-size:10px
+}
+
+.pass{
+  color:#059669
+}
+
+.watch{
+  color:#d97706
+}
+
+.fail{
+  color:#dc2626
+}
+
+.scan-score{
+  margin-top:10px;
+  height:7px;
+  background:#e5e7eb;
+  border-radius:99px;
+  overflow:hidden
+}
+
+.scan-score i{
+  display:block;
+  height:100%;
+  background:#111827;
+  border-radius:99px
+}
+
+.scan-note{
+  font-size:9px;
+  color:#6b7280;
+  margin-top:7px;
+  line-height:1.4
+}
+
+.blueprint-hero{
+  background:#111827;
+  color:#fff;
+  border-radius:18px;
+  padding:16px
+}
+
+.blueprint-symbol{
+  font-size:21px;
+  font-weight:800
+}
+
+.blueprint-status{
+  margin-top:4px;
+  color:#d1d5db;
+  font-size:11px
+}
+
+.blueprint-score{
+  margin-top:14px;
+  font-size:28px;
+  font-weight:800
+}
+
+.blueprint-score small{
+  font-size:11px;
+  color:#9ca3af
+}
+
+.blueprint-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:14px
+}
+
+.blueprint-box{
+  background:#f8fafc;
+  color:#111827;
+  padding:11px;
+  border-radius:10px
+}
+
+.blueprint-box small{
+  color:#6b7280;
+  font-size:9px
+}
+
+.blueprint-box b{
+  display:block;
+  margin-top:4px;
+  font-size:14px
+}
+
+.engine-card{
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:14px;
+  margin-top:10px
+}
+
+.engine-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:9px 0;
+  border-bottom:1px solid #f0f0f0
+}
+
+.engine-row:last-child{
+  border-bottom:0
+}
+
+.engine-name{
+  font-size:11px;
+  font-weight:700
+}
+
+.engine-value{
+  font-size:10px;
+  font-weight:800
+}
+
+.mode-card{
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:13px;
+  margin-top:10px
+}
+
+.mode-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px
+}
+
+.mode-name{
+  font-weight:800;
+  font-size:13px
+}
+
+.mode-desc{
+  font-size:10px;
+  color:#6b7280;
+  margin-top:4px
+}
+
+.tf-row{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  margin-top:10px
+}
+
+.tf{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:9px;
+  padding:7px 9px;
+  font-size:10px
+}
+
+.tf.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827
+}
+
+.watch-item,
+.journal-card{
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:13px;
+  margin-bottom:8px
+}
+
+.watch-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.watch-left{
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+
+.star{
+  font-size:18px
+}
+
+.watch-symbol,
+.journal-symbol{
+  font-size:14px;
+  font-weight:800
+}
+
+.watch-info,
+.journal-info{
+  font-size:10px;
+  color:#6b7280;
+  margin-top:3px
+}
+
+.watch-price{
+  text-align:right;
+  font-size:12px;
+  font-weight:800
+}
+
+.journal-result{
+  font-size:11px;
+  font-weight:800
+}
+
+.profit{
+  color:#059669
+}
+
+.loss{
+  color:#dc2626
+}
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:480px;
+  height:67px;
+  background:#fff;
+  border-top:1px solid #e5e7eb;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:100
+}
+
+.nav{
+  border:0;
+  background:#fff;
+  color:#6b7280;
+  font-size:9px
+}
+
+.nav-icon{
+  display:block;
+  font-size:18px;
+  margin-bottom:3px
+}
+
+.nav.active{
+  color:#111827;
+  font-weight:800
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:200
+}
+
+.modal.show{
+  display:flex
+}
+
+.modal-box{
+  width:100%;
+  max-width:480px;
+  background:#fff;
+  border-radius:22px 22px 0 0;
+  padding:18px;
+  max-height:84vh;
+  overflow:auto
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+
+.modal-title{
+  font-size:18px;
+  font-weight:800
+}
+
+.close{
+  border:0;
+  background:#f3f4f6;
+  border-radius:50%;
+  width:34px;
+  height:34px;
+  font-size:18px
+}
+
+.detail-grid{
+  grid-template-columns:repeat(2,1fr)
+}
+
+.detail{
+  background:#f8fafc;
+  border-radius:12px;
+  padding:12px
+}
+
+.detail b{
+  display:block;
+  margin-top:4px;
+  font-size:14px
+}
+
+.primary{
+  width:100%;
+  border:0;
+  background:#111827;
+  color:#fff;
+  border-radius:12px;
+  padding:12px;
+  margin-top:14px;
+  font-weight:800
+}
+
+.secondary{
+  width:100%;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  color:#111827;
+  border-radius:12px;
+  padding:12px;
+  margin-top:8px;
+  font-weight:800
+}
+
+.toggle{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:10px;
+  color:#374151
+}
+
+.toggle input{
+  width:17px;
+  height:17px
+}
+
+.empty-state{
+  text-align:center;
+  padding:25px 12px;
+  color:#6b7280;
+  font-size:11px
+}
+
+.loading{
+  padding:15px;
+  text-align:center;
+  color:#6b7280;
+  font-size:10px
+}
+
+@media(min-width:600px){
+  body{
+    padding:20px 0
+  }
+
+  .app{
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.1)
+  }
+
+  .bottom{
+    border-radius:0 0 25px 25px
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
-<header class="header"><div class="logo">🧠 Smart Money AI Pro</div><button id="dataBadge" class="demo" onclick="openDataModal()">DATA: DEMO • LIVE OFF</button></header>
-<section class="market"><div class="market-grid">
-<div class="market-card"><small>NIFTY 50</small><div id="niftyPrice" class="market-price">—</div><small id="niftyChange">Connecting…</small></div>
-<div class="market-card"><small>BANK NIFTY</small><div id="bankPrice" class="market-price">—</div><small id="bankChange">Connecting…</small></div>
-<div class="market-card"><small>INDIA VIX</small><div id="vixPrice" class="market-price">—</div><small id="vixState">Connecting…</small></div><div class="market-card"><small>GIFT NIFTY</small><div id="giftPrice" class="market-price">—</div><small id="giftChange">Connecting…</small></div>
-</div></section>
-<div class="regime"><div class="regime-title">MARKET REGIME</div><div class="regime-main"><div class="regime-value">🟢 BULLISH</div><div class="regime-score">78/100</div></div></div>
 
-<main id="home" class="page active">
-<section class="filter-area"><div class="filters">
-<button class="filter active" onclick="filterMode(this,'all')">All</button><button class="filter" onclick="filterMode(this,'intraday')">Intraday</button><button class="filter" onclick="filterMode(this,'scalping')">Scalping</button><button class="filter" onclick="filterMode(this,'swing')">Swing</button><button class="filter" onclick="filterMode(this,'positional')">Positional</button><button class="filter" onclick="filterMode(this,'longterm')">Long Term</button>
-</div></section>
-<section class="section"><div class="section-title">🔥 Top Setups</div><div class="section-subtitle">Price Action + Liquidity first. Tap a setup for the full blueprint.</div>
-<div class="setup" data-mode="swing" onclick="openSetup('RELIANCE')"><div class="setup-head"><div><div class="stock">RELIANCE</div><div class="setup-type">Breakout + Retest • Swing</div></div><div class="score-badge score-green">87/100</div></div><div class="metrics"><div class="metric"><small>ENTRY</small><b>₹1,520</b></div><div class="metric"><small>SL</small><b>₹1,485</b></div><div class="metric"><small>T1</small><b>₹1,605</b></div><div class="metric"><small>R:R</small><b>1:2.4</b></div></div><div class="reasons"><div class="reason good">✓ Trend</div><div class="reason good">✓ Volume</div><div class="reason good">✓ Liquidity Sweep</div><div class="reason good">✓ BOS</div><div class="reason warn">⚠ Resistance</div></div></div>
-<div class="setup" data-mode="swing" onclick="openSetup('HDFCBANK')"><div class="setup-head"><div><div class="stock">HDFCBANK</div><div class="setup-type">Liquidity Sweep • Swing</div></div><div class="score-badge score-yellow">81/100</div></div><div class="metrics"><div class="metric"><small>ENTRY</small><b>₹1,690</b></div><div class="metric"><small>SL</small><b>₹1,655</b></div><div class="metric"><small>T1</small><b>₹1,765</b></div><div class="metric"><small>R:R</small><b>1:2.1</b></div></div><div class="reasons"><div class="reason good">✓ Liquidity</div><div class="reason good">✓ Demand</div><div class="reason good">✓ Momentum</div><div class="reason good">✓ Structure</div><div class="reason warn">⚠ Confirmation</div></div></div></section>
-<section class="section"><div class="ai-card"><div class="ai-title">🧠 AI CRITIC</div><div class="ai-text">The engine scores confluence; it does not predict certainty. If structure, liquidity or risk/reward fails, the setup can become NO-TRADE.</div><div class="no-trade">⚠️ NO-TRADE FILTER: ACTIVE WHEN A KEY CONFIRMATION FAILS</div></div></section>
-</main>
+<header class="header">
+  <div class="logo">🧠 Smart Money AI Pro</div>
+  <button id="dataBadge" class="demo" onclick="openDataModal()">
+    DATA: DEMO • LIVE OFF
+  </button>
+</header>
 
-<main id="scanner" class="page">
-<section class="section"><div class="section-title">🔎 Stock Scanner</div><div id="scannerStatus" class="section-subtitle">Upstox live • 5m confirmation • price action + volume</div>
-<div class="scanner-search"><input id="stockSearch" class="search-box" placeholder="Search stock e.g. RELIANCE" oninput="searchStocks()"><button class="search-button" onclick="scanLive()">SCAN</button></div><div style="display:flex;gap:7px;margin:-2px 0 10px"><button class="chip" onclick="shareCurrentScan()" style="flex:1">🟢 WhatsApp Share</button><button class="chip" onclick="shareApp()" style="flex:1">📤 Share App</button></div>
-<div class="control-label">Trading style</div><div class="controls"><button class="chip active" onclick="setScanMode(this,'all')">All</button><button class="chip" onclick="setScanMode(this,'scalping')">Scalping</button><button class="chip" onclick="setScanMode(this,'intraday')">Intraday</button><button class="chip" onclick="setScanMode(this,'swing')">Swing</button><button class="chip" onclick="setScanMode(this,'positional')">Positional</button></div>
-<div class="control-label">Timeframe</div><div class="controls"><button class="chip tf-chip active" onclick="setTF(this,'5m')">5m</button><button class="chip tf-chip" onclick="setTF(this,'15m')">15m</button><button class="chip tf-chip" onclick="setTF(this,'1H')">1H</button><button class="chip tf-chip" onclick="setTF(this,'4H')">4H</button><button class="chip tf-chip" onclick="setTF(this,'1D')">1D</button><button class="chip tf-chip" onclick="setTF(this,'1W')">1W</button></div>
-<div class="scanner-summary"><span>Live setups</span><b id="scanCount">—</b><span id="scanTF">5m • All</span></div>
-<div id="scannerList"><div class="scanner-card"><div class="scanner-note">⏳ Connecting to Upstox live scanner…</div></div></div></div></section>
-</main>
+<section class="market">
+  <div class="market-grid">
 
-<main id="blueprint" class="page"><section class="section"><div class="section-title">🎯 Trade Blueprint</div><div class="section-subtitle">A structured checklist — not a guarantee of profit.</div>
-<div id="blueprintContent" class="blueprint-hero"><div class="blueprint-symbol">RELIANCE</div><div class="blueprint-status">Liquidity Sweep + BOS + Retest</div><div class="blueprint-score">87/100 <small>SETUP SCORE</small></div><div class="blueprint-grid"><div class="blueprint-box"><small>ENTRY</small><b>₹1,520</b></div><div class="blueprint-box"><small>STOP LOSS</small><b>₹1,485</b></div><div class="blueprint-box"><small>TARGET 1</small><b>₹1,605</b></div><div class="blueprint-box"><small>RISK / REWARD</small><b>1 : 2.4</b></div></div></div>
-<div class="mode-card"><div class="mode-head"><div><div class="mode-name">⚙️ Execution Profile</div><div class="mode-desc">Select timeframe to review the setup context.</div></div><div class="toggle"><input type="checkbox" id="confirmOnly" checked> Confirmation only</div></div><div class="tf-row"><button class="tf active" onclick="bpTF(this)">5m</button><button class="tf" onclick="bpTF(this)">15m</button><button class="tf" onclick="bpTF(this)">1H</button><button class="tf" onclick="bpTF(this)">4H</button><button class="tf" onclick="bpTF(this)">1D</button></div></div>
-<div class="engine-card"><div class="section-title">🧩 Setup Engine</div><div class="engine-row"><div class="engine-name">Price Action</div><div class="engine-value pass">✓ PASS</div></div><div class="engine-row"><div class="engine-name">Liquidity</div><div class="engine-value pass">✓ SWEEP</div></div><div class="engine-row"><div class="engine-name">Market Structure</div><div class="engine-value pass">✓ BOS</div></div><div class="engine-row"><div class="engine-name">Supply / Demand</div><div class="engine-value pass">✓ DEMAND</div></div><div class="engine-row"><div class="engine-name">Order Block</div><div class="engine-value pass">✓ VALID</div></div><div class="engine-row"><div class="engine-name">FVG / Imbalance</div><div class="engine-value watch">◐ WATCH</div></div><div class="engine-row"><div class="engine-name">Volume</div><div class="engine-value pass">✓ EXPANSION</div></div><div class="engine-row"><div class="engine-name">Momentum</div><div class="engine-value pass">✓ STRONG</div></div><div class="engine-row"><div class="engine-name">VWAP</div><div class="engine-value pass">✓ ALIGNED</div></div></div>
-<div class="section"><div class="ai-card"><div class="ai-title">🧠 AI Critic</div><div class="ai-text">Strong confluence is present, but nearby resistance and the FVG watch state reduce confidence. Wait for the planned confirmation rather than chasing price.</div><div class="no-trade">⚠️ ENTER ONLY AFTER CONFIRMATION + ACCEPTABLE RISK/REWARD</div></div></div>
-</section></main>
-
-<main id="watchlist" class="page"><section class="section"><div class="section-title">⭐ Watchlist</div><div class="section-subtitle">Your demo candidates.</div>
-<div class="watch-item" onclick="openSetup('RELIANCE')"><div class="watch-left"><div class="star">⭐</div><div><div class="watch-symbol">RELIANCE</div><div class="watch-info">Swing • Strong setup</div></div></div><div class="watch-price">₹1,520<br><span class="up">+1.2%</span></div></div>
-<div class="watch-item" onclick="openSetup('HDFCBANK')"><div class="watch-left"><div class="star">⭐</div><div><div class="watch-symbol">HDFCBANK</div><div class="watch-info">Swing • Watch</div></div></div><div class="watch-price">₹1,690<br><span class="up">+0.8%</span></div></div>
-<div class="watch-item" onclick="openSetup('ICICIBANK')"><div class="watch-left"><div class="star">⭐</div><div><div class="watch-symbol">ICICIBANK</div><div class="watch-info">Intraday • Watch+</div></div></div><div class="watch-price">₹1,260<br><span class="up">+0.6%</span></div></div>
-</section></main>
-
-<main id="journal" class="page"><section class="section"><div class="section-title">📓 Trade Journal</div><div class="section-subtitle">Demo history — later we can add local save/export.</div>
-<div class="journal-card"><div class="journal-top"><div class="journal-symbol">RELIANCE</div><div class="journal-result profit">+₹2,450</div></div><div class="journal-info">Swing • RR 1:2.4 • Win</div></div>
-<div class="journal-card"><div class="journal-top"><div class="journal-symbol">TCS</div><div class="journal-result loss">-₹850</div></div><div class="journal-info">Intraday • RR 1:1 • Loss</div></div>
-</section></main>
-
-<nav class="bottom">
-<button class="nav active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>Home</button>
-<button class="nav" onclick="showPage('scanner',this)"><span class="nav-icon">🔎</span>Scanner</button>
-<button class="nav" onclick="showPage('blueprint',this)"><span class="nav-icon">🎯</span>Blueprint</button>
-<button class="nav" onclick="showPage('watchlist',this)"><span class="nav-icon">⭐</span>Watchlist</button>
-<button class="nav" onclick="showPage('journal',this)"><span class="nav-icon">📓</span>Journal</button>
-</nav>
-</div>
-
-<div id="dataModal" class="modal" onclick="closeDataModal(event)">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title">📡 Market Data Connection</div>
-      <button class="close" onclick="closeDataModal()">×</button>
+    <div class="market-card">
+      <small>NIFTY 50</small>
+      <div id="niftyPrice" class="market-price">—</div>
+      <small id="niftyChange">Connecting…</small>
     </div>
-    <div class="section-subtitle" style="margin-top:12px">
-      Abhi app DEMO DATA par hai. Real Indian intraday candles ke liye broker/data provider connect karna hoga.
+
+    <div class="market-card">
+      <small>BANK NIFTY</small>
+      <div id="bankPrice" class="market-price">—</div>
+      <small id="bankChange">Connecting…</small>
     </div>
-    <div class="mode-card">
-      <div class="mode-name">🟢 Upstox</div>
-      <div class="mode-desc">Live quotes + historical candles + India VIX/GIFT NIFTY support available through the broker API. Best fit for our next live-data phase.</div>
-      <button class="primary" onclick="selectProvider('Upstox')">Connect Upstox</button>
+
+    <div class="market-card">
+      <small>INDIA VIX</small>
+      <div id="vixPrice" class="market-price">—</div>
+      <small id="vixState">Connecting…</small>
     </div>
-    <div class="mode-card">
-      <div class="mode-name">🔵 Zerodha Kite Connect</div>
-      <div class="mode-desc">Live market streaming and historical candle APIs. API access is configured through your Kite developer app.</div>
-      <button class="primary" onclick="selectProvider('Zerodha Kite')">Select Zerodha</button>
+
+    <div class="market-card">
+      <small>GIFT NIFTY</small>
+      <div id="giftPrice" class="market-price">—</div>
+      <small id="giftChange">Connecting…</small>
     </div>
-    <div class="mode-card">
-      <div class="mode-name">🟡 Twelve Data</div>
-      <div class="mode-desc">Useful as a market-data provider, but its NSE page currently lists EOD delay, so it is not our first choice for live intraday scanning.</div>
-      <button class="primary" onclick="selectProvider('Twelve Data')">Select Twelve Data</button>
-    </div>
-    <div class="ai-card" style="margin-top:12px">
-      <div class="ai-title">🔐 Security rule</div>
-      <div class="ai-text">API secret/access token frontend code mein nahi rakhenge. Vercel Environment Variables + server API route use karenge.</div>
-      <div class="no-trade">⚠️ Until connected, scanner numbers are DEMO ONLY — real trade decision ke liye use mat karo.</div>
-    </div>
+
+  </div>
+</section>
+
+<div class="regime">
+  <div class="regime-title">MARKET REGIME</div>
+
+  <div class="regime-main">
+    <div class="regime-value">🟢 BULLISH</div>
+    <div class="regime-score">78/100</div>
   </div>
 </div>
 
-<div id="modal" class="modal" onclick="closeModal(event)"><div class="modal-box"><div class="modal-head"><div id="modalTitle" class="modal-title">Setup</div><button class="close" onclick="closeModal()">×</button></div><div id="modalBody"></div></div></div>
+
+<!-- HOME -->
+
+<main id="home" class="page active">
+
+<section class="filter-area">
+
+<div class="filters">
+
+<button class="filter active"
+onclick="filterMode(this,'all')">
+All
+</button>
+
+<button class="filter"
+onclick="filterMode(this,'intraday')">
+Intraday
+</button>
+
+<button class="filter"
+onclick="filterMode(this,'scalping')">
+Scalping
+</button>
+
+<button class="filter"
+onclick="filterMode(this,'swing')">
+Swing
+</button>
+
+<button class="filter"
+onclick="filterMode(this,'positional')">
+Positional
+</button>
+
+<button class="filter"
+onclick="filterMode(this,'longterm')">
+Long Term
+</button>
+
+</div>
+</section>
+
+
+<section class="section">
+
+<div class="section-title">
+🔥 Top Setups
+</div>
+
+<div class="section-subtitle">
+Price Action + Liquidity first. Tap a setup for the full blueprint.
+</div>
+
+
+<div
+class="setup"
+data-mode="swing"
+data-stock="RELIANCE"
+onclick="openSetup('RELIANCE')"
+>
+
+<div class="setup-head">
+
+<div>
+<div class="stock">RELIANCE</div>
+<div class="setup-type">
+Breakout + Retest • Swing
+</div>
+</div>
+
+<div class="score-badge score-green">
+87/100
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+<div class="metric">
+<small>ENTRY</small>
+<b>₹1,520</b>
+</div>
+
+<div class="metric">
+<small>SL</small>
+<b>₹1,485</b>
+</div>
+
+<div class="metric">
+<small>T1</small>
+<b>₹1,605</b>
+</div>
+
+<div class="metric">
+<small>R:R</small>
+<b>1:2.4</b>
+</div>
+
+</div>
+
+
+<div class="reasons">
+
+<div class="reason good">✓ Trend</div>
+<div class="reason good">✓ Volume</div>
+<div class="reason good">✓ Liquidity Sweep</div>
+<div class="reason good">✓ BOS</div>
+<div class="reason warn">⚠ Resistance</div>
+
+</div>
+
+</div>
+
+
+<div
+class="setup"
+data-mode="swing"
+data-stock="HDFCBANK"
+onclick="openSetup('HDFCBANK')"
+>
+
+<div class="setup-head">
+
+<div>
+<div class="stock">HDFCBANK</div>
+<div class="setup-type">
+Liquidity Sweep • Swing
+</div>
+</div>
+
+<div class="score-badge score-yellow">
+81/100
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+<div class="metric">
+<small>ENTRY</small>
+<b>₹1,690</b>
+</div>
+
+<div class="metric">
+<small>SL</small>
+<b>₹1,655</b>
+</div>
+
+<div class="metric">
+<small>T1</small>
+<b>₹1,765</b>
+</div>
+
+<div class="metric">
+<small>R:R</small>
+<b>1:2.1</b>
+</div>
+
+</div>
+
+
+<div class="reasons">
+
+<div class="reason good">✓ Liquidity</div>
+<div class="reason good">✓ Demand</div>
+<div class="reason good">✓ Momentum</div>
+<div class="reason good">✓ Structure</div>
+<div class="reason warn">⚠ Confirmation</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<div class="ai-card">
+
+<div class="ai-title">
+🧠 AI CRITIC
+</div>
+
+<div class="ai-text">
+The engine scores confluence; it does not predict certainty.
+If structure, liquidity or risk/reward fails, the setup can become NO-TRADE.
+</div>
+
+<div class="no-trade">
+⚠️ NO-TRADE FILTER: ACTIVE WHEN A KEY CONFIRMATION FAILS
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- SCANNER -->
+
+<main id="scanner" class="page">
+
+<section class="section">
+
+<div class="section-title">
+🔎 Stock Scanner
+</div>
+
+<div id="scannerStatus" class="section-subtitle">
+Upstox live • 5m confirmation • price action + volume
+</div>
+
+
+<div class="scanner-search">
+
+<input
+id="stockSearch"
+class="search-box"
+placeholder="Search stock e.g. RELIANCE"
+oninput="searchStocks()"
+>
+
+<button
+class="search-button"
+onclick="scanLive()"
+>
+SCAN
+</button>
+
+</div>
+
+
+<div style="display:flex;gap:7px;margin:-2px 0 10px">
+
+<button
+class="chip"
+onclick="shareCurrentScan()"
+style="flex:1"
+>
+🟢 WhatsApp Share
+</button>
+
+<button
+class="chip"
+onclick="shareApp()"
+style="flex:1"
+>
+📤 Share App
+</button>
+
+</div>
+
+
+<div class="control-label">
+Trading style
+</div>
+
+<div class="controls">
+
+<button
+class="chip active"
+onclick="setScanMode(this,'all')"
+>
+All
+</button>
+
+<button
+class="chip"
+onclick="setScanMode(this,'scalping')"
+>
+Scalping
+</button>
+
+<button
+class="chip"
+onclick="setScanMode(this,'intraday')"
+>
+Intraday
+</button>
+
+<button
+class="chip"
+onclick="setScanMode(this,'swing')"
+>
+Swing
+</button>
+
+<button
+class="chip"
+onclick="setScanMode(this,'positional')"
+>
+Positional
+</button>
+
+</div>
+
+
+<div class="control-label">
+Timeframe
+</div>
+
+<div class="controls">
+
+<button
+class="chip tf-chip active"
+onclick="setTF(this,'5m')"
+>
+5m
+</button>
+
+<button
+class="chip tf-chip"
+onclick="setTF(this,'15m')"
+>
+15m
+</button>
+
+<button
+class="chip tf-chip"
+onclick="setTF(this,'1H')"
+>
+1H
+</button>
+
+<button
+class="chip tf-chip"
+onclick="setTF(this,'4H')"
+>
+4H
+</button>
+
+<button
+class="chip tf-chip"
+onclick="setTF(this,'1D')"
+>
+1D
+</button>
+
+<button
+class="chip tf-chip"
+onclick="setTF(this,'1W')"
+>
+1W
+</button>
+
+</div>
+
+
+<div class="scanner-summary">
+
+<span>Live setups</span>
+
+<b id="scanCount">—</b>
+
+<span id="scanTF">
+5m • All
+</span>
+
+</div>
+
+
+<div id="scannerList">
+
+<div class="scanner-card">
+
+<div class="scanner-note">
+⏳ Connecting to Upstox live scanner…
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- BLUEPRINT -->
+
+<main id="blueprint" class="page">
+
+<section class="section">
+
+<div class="section-title">
+🎯 Trade Blueprint
+</div>
+
+<div class="section-subtitle">
+A structured checklist — not a guarantee of profit.
+</div>
+
+
+<div id="blueprintContent" class="blueprint-hero">
+
+<div class="blueprint-symbol">
+RELIANCE
+</div>
+
+<div class="blueprint-status">
+Liquidity Sweep + BOS + Retest
+</div>
+
+<div class="blueprint-score">
+87/100
+<small>SETUP SCORE</small>
+</div>
+
+
+<div class="blueprint-grid">
+
+<div class="blueprint-box">
+<small>ENTRY</small>
+<b>₹1,520</b>
+</div>
+
+<div class="blueprint-box">
+<small>STOP LOSS</small>
+<b>₹1,485</b>
+</div>
+
+<div class="blueprint-box">
+<small>TARGET 1</small>
+<b>₹1,605</b>
+</div>
+
+<div class="blueprint-box">
+<small>RISK / REWARD</small>
+<b>1 : 2.4</b>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="mode-card">
+
+<div class="mode-head">
+
+<div>
+
+<div class="mode-name">
+⚙️ Execution Profile
+</div>
+
+<div class="mode-desc">
+Select timeframe to review the setup context.
+</div>
+
+</div>
+
+<div class="toggle">
+
+<input
+type="checkbox"
+id="confirmOnly"
+checked
+>
+
+Confirmation only
+
+</div>
+
+</div>
+
+
+<div class="tf-row">
+
+<button class="tf active" onclick="bpTF(this)">
+5m
+</button>
+
+<button class="tf" onclick="bpTF(this)">
+15m
+</button>
+
+<button class="tf" onclick="bpTF(this)">
+1H
+</button>
+
+<button class="tf" onclick="bpTF(this)">
+4H
+</button>
+
+<button class="tf" onclick="bpTF(this)">
+1D
+</button>
+
+</div>
+
+</div>
+
+
+<div class="engine-card">
+
+<div class="section-title">
+🧩 Setup Engine
+</div>
+
+
+<div class="engine-row">
+<div class="engine-name">Price Action</div>
+<div class="engine-value pass">✓ PASS</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">Liquidity</div>
+<div class="engine-value pass">✓ SWEEP</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">Market Structure</div>
+<div class="engine-value pass">✓ BOS</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">Supply / Demand</div>
+<div class="engine-value pass">✓ DEMAND</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">Order Block</div>
+<div class="engine-value pass">✓ VALID</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">FVG / Imbalance</div>
+<div class="engine-value watch">◐ WATCH</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">Volume</div>
+<div class="engine-value pass">✓ EXPANSION</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">Momentum</div>
+<div class="engine-value pass">✓ STRONG</div>
+</div>
+
+<div class="engine-row">
+<div class="engine-name">VWAP</div>
+<div class="engine-value pass">✓ ALIGNED</div>
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="ai-card">
+
+<div class="ai-title">
+🧠 AI Critic
+</div>
+
+<div class="ai-text">
+Strong confluence is present, but nearby resistance and the FVG watch state reduce confidence.
+Wait for the planned confirmation rather than chasing price.
+</div>
+
+<div class="no-trade">
+⚠️ ENTER ONLY AFTER CONFIRMATION + ACCEPTABLE RISK/REWARD
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- WATCHLIST -->
+
+<main id="watchlist" class="page">
+
+<section class="section">
+
+<div class="section-title">
+⭐ Watchlist
+</div>
+
+<div class="section-subtitle">
+Your demo candidates.
+</div>
+
+
+<div
+class="watch-item"
+onclick="openSetup('RELIANCE')"
+>
+
+<div class="watch-left">
+
+<div class="star">
+⭐
+</div>
+
+<div>
+
+<div class="watch-symbol">
+RELIANCE
+</div>
+
+<div class="watch-info">
+Swing • Strong setup
+</div>
+
+</div>
+
+</div>
+
+<div class="watch-price">
+₹1,520<br>
+<span class="up">+1.2%</span>
+</div>
+
+</div>
+
+
+<div
+class="watch-item"
+onclick="openSetup('HDFCBANK')"
+>
+
+<div class="watch-left">
+
+<div class="star">
+⭐
+</div>
+
+<div>
+
+<div class="watch-symbol">
+HDFCBANK
+</div>
+
+<div class="watch-info">
+Swing • Watch
+</div>
+
+</div>
+
+</div>
+
+<div class="watch-price">
+₹1,690<br>
+<span class="up">+0.8%</span>
+</div>
+
+</div>
+
+
+<div
+class="watch-item"
+onclick="openSetup('ICICIBANK')"
+>
+
+<div class="watch-left">
+
+<div class="star">
+⭐
+</div>
+
+<div>
+
+<div class="watch-symbol">
+ICICIBANK
+</div>
+
+<div class="watch-info">
+Intraday • Watch+
+</div>
+
+</div>
+
+</div>
+
+<div class="watch-price">
+₹1,260<br>
+<span class="up">+0.6%</span>
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- JOURNAL -->
+
+<main id="journal" class="page">
+
+<section class="section">
+
+<div class="section-title">
+📓 Trade Journal
+</div>
+
+<div class="section-subtitle">
+Demo history — later we can add local save/export.
+</div>
+
+
+<div class="journal-card">
+
+<div class="journal-top">
+
+<div class="journal-symbol">
+RELIANCE
+</div>
+
+<div class="journal-result profit">
++₹2,450
+</div>
+
+</div>
+
+<div class="journal-info">
+Swing • RR 1:2.4 • Win
+</div>
+
+</div>
+
+
+<div class="journal-card">
+
+<div class="journal-top">
+
+<div class="journal-symbol">
+TCS
+</div>
+
+<div class="journal-result loss">
+-₹850
+</div>
+
+</div>
+
+<div class="journal-info">
+Intraday • RR 1:1 • Loss
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom">
+
+<button
+class="nav active"
+onclick="showPage('home',this)"
+>
+
+<span class="nav-icon">🏠</span>
+Home
+
+</button>
+
+
+<button
+class="nav"
+onclick="showPage('scanner',this)"
+>
+
+<span class="nav-icon">🔎</span>
+Scanner
+
+</button>
+
+
+<button
+class="nav"
+onclick="showPage('blueprint',this)"
+>
+
+<span class="nav-icon">🎯</span>
+Blueprint
+
+</button>
+
+
+<button
+class="nav"
+onclick="showPage('watchlist',this)"
+>
+
+<span class="nav-icon">⭐</span>
+Watchlist
+
+</button>
+
+
+<button
+class="nav"
+onclick="showPage('journal',this)"
+>
+
+<span class="nav-icon">📓</span>
+Journal
+
+</button>
+
+</nav>
+
+</div>
+
+
+<!-- DATA MODAL -->
+
+<div
+id="dataModal"
+class="modal"
+onclick="closeDataModal(event)"
+>
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<div class="modal-title">
+📡 Market Data Connection
+</div>
+
+<button
+class="close"
+onclick="closeDataModal()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+class="section-subtitle"
+style="margin-top:12px"
+>
+
+Abhi app DEMO DATA par hai.
+Real Indian intraday candles ke liye broker/data provider connect karna hoga.
+
+</div>
+
+
+<div class="mode-card">
+
+<div class="mode-name">
+🟢 Upstox
+</div>
+
+<div class="mode-desc">
+
+Live quotes + historical candles.
+Best fit for our live-data phase.
+
+</div>
+
+<button
+class="primary"
+onclick="selectProvider('Upstox')"
+>
+Connect Upstox
+</button>
+
+</div>
+
+
+<div class="mode-card">
+
+<div class="mode-name">
+🔵 Zerodha Kite Connect
+</div>
+
+<div class="mode-desc">
+
+Live market streaming and historical candle APIs.
+API access is configured through your Kite developer app.
+
+</div>
+
+<button
+class="primary"
+onclick="selectProvider('Zerodha Kite')"
+>
+Select Zerodha
+</button>
+
+</div>
+
+
+<div class="mode-card">
+
+<div class="mode-name">
+🟡 Twelve Data
+</div>
+
+<div class="mode-desc">
+
+Useful as a market-data provider, but not our first choice
+for live intraday scanning.
+
+</div>
+
+<button
+class="primary"
+onclick="selectProvider('Twelve Data')"
+>
+Select Twelve Data
+</button>
+
+</div>
+
+
+<div
+class="ai-card"
+style="margin-top:12px"
+>
+
+<div class="ai-title">
+🔐 Security rule
+</div>
+
+<div class="ai-text">
+
+API secret/access token frontend code mein nahi rakhenge.
+Vercel Environment Variables + server API route use karenge.
+
+</div>
+
+<div class="no-trade">
+
+⚠️ Until connected, scanner numbers are DEMO ONLY —
+real trade decision ke liye use mat karo.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SETUP MODAL -->
+
+<div
+id="modal"
+class="modal"
+onclick="closeModal(event)"
+>
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<div
+id="modalTitle"
+class="modal-title"
+>
+Setup
+</div>
+
+<button
+class="close"
+onclick="closeModal()"
+>
+×
+</button>
+
+</div>
+
+<div id="modalBody"></div>
+
+</div>
+
+</div>
+
 
 <script>
+
 const setups={
-RELIANCE:{price:'₹1,520',sl:'₹1,485',t1:'₹1,605',rr:'1:2.4',score:'87/100',type:'Breakout + Retest • Swing',status:'Liquidity Sweep + BOS + Retest',mode:'Swing'},
-HDFCBANK:{price:'₹1,690',sl:'₹1,655',t1:'₹1,765',rr:'1:2.1',score:'81/100',type:'Liquidity Sweep • Swing',status:'Liquidity Sweep + Demand + Structure',mode:'Swing'},
-TCS:{price:'₹3,420',sl:'₹3,390',t1:'₹3,480',rr:'1:2.0',score:'54/100',type:'Weak Price Action • Intraday',status:'No clear confirmation',mode:'Intraday'},
-ICICIBANK:{price:'₹1,260',sl:'₹1,245',t1:'₹1,295',rr:'1:2.3',score:'76/100',type:'Higher Low • Intraday',status:'Momentum + Structure',mode:'Intraday'}
-};
-let scanMode='all',scanTF='5m',liveRows=[],liveSetups={};
 
-function openDataModal(){document.getElementById('dataModal').classList.add('show')}
-function closeDataModal(e){if(e&&e.target!==document.getElementById('dataModal'))return;document.getElementById('dataModal').classList.remove('show')}
+RELIANCE:{
+price:'₹1,520',
+sl:'₹1,485',
+t1:'₹1,605',
+rr:'1:2.4',
+score:'87/100',
+type:'Breakout + Retest • Swing',
+status:'Liquidity Sweep + BOS + Retest',
+mode:'Swing'
+},
+
+HDFCBANK:{
+price:'₹1,690',
+sl:'₹1,655',
+t1:'₹1,765',
+rr:'1:2.1',
+score:'81/100',
+type:'Liquidity Sweep • Swing',
+status:'Liquidity Sweep + Demand + Structure',
+mode:'Swing'
+},
+
+TCS:{
+price:'₹3,420',
+sl:'₹3,390',
+t1:'₹3,480',
+rr:'1:2.0',
+score:'54/100',
+type:'Weak Price Action • Intraday',
+status:'No clear confirmation',
+mode:'Intraday'
+},
+
+ICICIBANK:{
+price:'₹1,260',
+sl:'₹1,245',
+t1:'₹1,295',
+rr:'1:2.3',
+score:'76/100',
+type:'Higher Low • Intraday',
+status:'Momentum + Structure',
+mode:'Intraday'
+}
+
+};
+
+
+let scanMode='all';
+let scanTF='5m';
+let liveRows=[];
+let liveSetups={};
+
+
+function openDataModal(){
+
+document
+.getElementById('dataModal')
+.classList.add('show');
+
+}
+
+
+function closeDataModal(e){
+
+const modal=document.getElementById('dataModal');
+
+if(
+e &&
+e.target!==modal
+){
+return;
+}
+
+modal.classList.remove('show');
+
+}
+
+
 function selectProvider(name){
-  localStorage.setItem('sb_provider',name);
-  document.querySelector('.demo').textContent='DATA: '+name.toUpperCase();
-  closeDataModal();
-  if(name==='Upstox'){ window.location.href='/api/upstox/login'; return; } alert(name+' selected. Next step: secure API connection + live candles.');
+
+localStorage.setItem(
+'sb_provider',
+name
+);
+
+const badge=document.getElementById('dataBadge');
+
+if(badge){
+
+badge.textContent=
+'DATA: '+name.toUpperCase();
+
 }
+
+closeDataModal();
+
+if(name==='Upstox'){
+
+window.location.href=
+'/api/upstox/login';
+
+return;
+
+}
+
+alert(
+name+
+' selected. Next step: secure API connection + live candles.'
+);
+
+}
+
+
 function showPage(id,btn){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
-if(btn)btn.classList.add('active');
-window.scrollTo({top:0,behavior:'smooth'});
-}
-function filterMode(btn,mode){
-document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-document.querySelectorAll('#home .setup').forEach(card=>{card.style.display=(mode==='all'||card.dataset.mode===mode)?'block':'none'});
-}
-function setScanMode(btn,mode){
-document.querySelectorAll('.controls .chip').forEach(b=>{if(!b.classList.contains('tf-chip'))b.classList.remove('active')});
-btn.classList.add('active');scanMode=mode;searchStocks();
-}
-function setTF(btn,tf){
-document.querySelectorAll('.tf-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');scanTF=tf;
-document.getElementById('scanTF').textContent=tf+' • '+(scanMode==='all'?'All':scanMode.charAt(0).toUpperCase()+scanMode.slice(1));
-scanLive();
-}
-function searchStocks(){
-const q=document.getElementById('stockSearch').value.trim().toUpperCase();let count=0;
-document.querySelectorAll('#scannerList .scanner-card').forEach(card=>{
-const matches=!q||card.dataset.stock.includes(q);
-const modeOk=scanMode==='all'||card.dataset.mode===scanMode;
-const show=matches&&modeOk;card.style.display=show?'block':'none';if(show)count++;
+
+document
+.querySelectorAll('.page')
+.forEach(p=>{
+p.classList.remove('active');
 });
-document.getElementById('scanCount').textContent=count;
+
+
+const page=document.getElementById(id);
+
+if(page){
+page.classList.add('active');
 }
-function bpTF(btn){document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+
+
+document
+.querySelectorAll('.nav')
+.forEach(n=>{
+n.classList.remove('active');
+});
+
+
+if(btn){
+btn.classList.add('active');
+}
+
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+
+function filterMode(btn,mode){
+
+document
+.querySelectorAll('#home .filter')
+.forEach(b=>{
+b.classList.remove('active');
+});
+
+btn.classList.add('active');
+
+
+document
+.querySelectorAll('#home .setup')
+.forEach(card=>{
+
+const cardMode=card.dataset.mode;
+
+card.style.display=
+(
+mode==='all' ||
+cardMode===mode
+)
+?'block'
+:'none';
+
+});
+
+}
+
+
+function setScanMode(btn,mode){
+
+document
+.querySelectorAll('.controls .chip')
+.forEach(b=>{
+
+if(
+!b.classList.contains('tf-chip')
+){
+b.classList.remove('active');
+}
+
+});
+
+
+btn.classList.add('active');
+
+scanMode=mode;
+
+document.getElementById('scanTF').textContent=
+scanTF+
+' • '+
+(
+scanMode==='all'
+?'All'
+:scanMode.charAt(0).toUpperCase()+scanMode.slice(1)
+);
+
+searchStocks();
+
+}
+
+
+function setTF(btn,tf){
+
+document
+.querySelectorAll('.tf-chip')
+.forEach(b=>{
+b.classList.remove('active');
+});
+
+
+btn.classList.add('active');
+
+scanTF=tf;
+
+document.getElementById('scanTF').textContent=
+tf+
+' • '+
+(
+scanMode==='all'
+?'All'
+:scanMode.charAt(0).toUpperCase()+scanMode.slice(1)
+);
+
+scanLive();
+
+}
+
+
+function searchStocks(){
+
+const input=document.getElementById('stockSearch');
+
+const q=
+input
+?input.value.trim().toUpperCase()
+:'';
+
+
+let count=0;
+
+
+document
+.querySelectorAll('#scannerList .scanner-card')
+.forEach(card=>{
+
+const stock=
+(card.dataset.stock||'').toUpperCase();
+
+const mode=
+(card.dataset.mode||'').toLowerCase();
+
+const matches=
+!q ||
+stock.includes(q);
+
+const modeOk=
+scanMode==='all' ||
+mode===scanMode;
+
+const show=
+matches &&
+modeOk;
+
+card.style.display=
+show
+?'block'
+:'none';
+
+if(show){
+count++;
+}
+
+});
+
+
+document.getElementById('scanCount')
+.textContent=count;
+
+}
+
+
+function bpTF(btn){
+
+document
+.querySelectorAll('.tf')
+.forEach(b=>{
+b.classList.remove('active');
+});
+
+btn.classList.add('active');
+
+}
+
+
 function openSetup(symbol){
-const s=liveSetups[symbol]||setups[symbol]||setups.RELIANCE;
-document.getElementById('modalTitle').textContent=symbol+' • Trade Blueprint';
-document.getElementById('modalBody').innerHTML='<div class="section-subtitle" style="margin-top:12px">'+s.type+'</div><div class="detail-grid"><div class="detail"><small>ENTRY</small><b>'+s.price+'</b></div><div class="detail"><small>STOP LOSS</small><b>'+s.sl+'</b></div><div class="detail"><small>TARGET 1</small><b>'+s.t1+'</b></div><div class="detail"><small>RISK / REWARD</small><b>'+s.rr+'</b></div><div class="detail"><small>SETUP SCORE</small><b>'+s.score+'</b></div><div class="detail"><small>STATUS</small><b>'+s.status+'</b></div></div><button class="primary" onclick="openBlueprintPage(\''+symbol+'\')">Open Full Blueprint</button><div class="ai-card" style="margin-top:12px"><div class="ai-title">🧠 AI Critic</div><div class="ai-text">Demo analysis only. Confirm price action, liquidity, structure and risk/reward before any real trade.</div></div>';
-document.getElementById('modal').classList.add('show');
+
+const s=
+liveSetups[symbol] ||
+setups[symbol] ||
+setups.RELIANCE;
+
+
+document.getElementById('modalTitle')
+.textContent=
+symbol+
+' • Trade Blueprint';
+
+
+document.getElementById('modalBody')
+.innerHTML=`
+
+<div
+class="section-subtitle"
+style="margin-top:12px"
+>
+${escapeHtml(s.type)}
+</div>
+
+<div class="detail-grid">
+
+<div class="detail">
+<small>ENTRY</small>
+<b>${escapeHtml(s.price)}</b>
+</div>
+
+<div class="detail">
+<small>STOP LOSS</small>
+<b>${escapeHtml(s.sl)}</b>
+</div>
+
+<div class="detail">
+<small>TARGET 1</small>
+<b>${escapeHtml(s.t1)}</b>
+</div>
+
+<div class="detail">
+<small>RISK / REWARD</small>
+<b>${escapeHtml(s.rr)}</b>
+</div>
+
+<div class="detail">
+<small>SETUP SCORE</small>
+<b>${escapeHtml(s.score)}</b>
+</div>
+
+<div class="detail">
+<small>STATUS</small>
+<b>${escapeHtml(s.status)}</b>
+</div>
+
+</div>
+
+<button
+class="primary"
+onclick="openBlueprintPage('${escapeJs(symbol)}')"
+>
+Open Full Blueprint
+</button>
+
+<button
+class="secondary"
+onclick="shareSetup('${escapeJs(symbol)}')"
+>
+🟢 Share Setup
+</button>
+
+<div
+class="ai-card"
+style="margin-top:12px"
+>
+
+<div class="ai-title">
+🧠 AI Critic
+</div>
+
+<div class="ai-text">
+Demo analysis only.
+Confirm price action, liquidity, structure and risk/reward before any real trade.
+</div>
+
+</div>
+`;
+
+
+document
+.getElementById('modal')
+.classList.add('show');
+
 }
+
+
 function openBlueprintPage(symbol){
-closeModal();showPage('blueprint',document.querySelectorAll('.nav')[2]);
-const s=setups[symbol]||setups.RELIANCE;
-document.getElementById('blueprintContent').innerHTML='<div class="blueprint-symbol">'+symbol+'</div><div class="blueprint-status">'+s.status+' • '+s.mode+'</div><div class="blueprint-score">'+s.score+' <small>SETUP SCORE</small></div><div class="blueprint-grid"><div class="blueprint-box"><small>ENTRY</small><b>'+s.price+'</b></div><div class="blueprint-box"><small>STOP LOSS</small><b>'+s.sl+'</b></div><div class="blueprint-box"><small>TARGET 1</small><b>'+s.t1+'</b></div><div class="blueprint-box"><small>RISK / REWARD</small><b>'+s.rr+'</b></div></div>';
+
+closeModal();
+
+showPage(
+'blueprint',
+document.querySelectorAll('.nav')[2]
+);
+
+
+const s=
+liveSetups[symbol] ||
+setups[symbol] ||
+setups.RELIANCE;
+
+
+document.getElementById('blueprintContent')
+.innerHTML=`
+
+<div class="blueprint-symbol">
+${escapeHtml(symbol)}
+</div>
+
+<div class="blueprint-status">
+${escapeHtml(s.status)}
+ •
+${escapeHtml(s.mode||'Live')}
+</div>
+
+<div class="blueprint-score">
+${escapeHtml(s.score)}
+<small>SETUP SCORE</small>
+</div>
+
+<div class="blueprint-grid">
+
+<div class="blueprint-box">
+<small>ENTRY</small>
+<b>${escapeHtml(s.price)}</b>
+</div>
+
+<div class="blueprint-box">
+<small>STOP LOSS</small>
+<b>${escapeHtml(s.sl)}</b>
+</div>
+
+<div class="blueprint-box">
+<small>TARGET 1</small>
+<b>${escapeHtml(s.t1)}</b>
+</div>
+
+<div class="blueprint-box">
+<small>RISK / REWARD</small>
+<b>${escapeHtml(s.rr)}</b>
+</div>
+
+</div>
+`;
+
 }
-function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('show')}
-function money(n){return Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2})}
+
+
+function closeModal(e){
+
+const modal=
+document.getElementById('modal');
+
+if(
+e &&
+e.target!==modal
+){
+return;
+}
+
+modal.classList.remove('show');
+
+}
+
+
+function escapeHtml(value){
+
+return String(value??'')
+.replace(/&/g,'&amp;')
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;')
+.replace(/'/g,'&#039;');
+
+}
+
+
+function escapeJs(value){
+
+return String(value??'')
+.replace(/\\/g,'\\\\')
+.replace(/'/g,"\\'");
+
+}
+
+
+function money(n){
+
+return Number(n||0)
+.toLocaleString(
+'en-IN',
+{
+maximumFractionDigits:2
+}
+);
+
+}
+
+
 function setBadge(text,live){
-  const b=document.getElementById('dataBadge');if(!b)return;
-  b.textContent=text;b.style.background=live?'#dcfce7':'#fff3cd';b.style.color=live?'#166534':'#856404';
+
+const b=
+document.getElementById('dataBadge');
+
+if(!b){
+return;
 }
+
+b.textContent=text;
+
+b.style.background=
+live
+?'#dcfce7'
+:'#fff3cd';
+
+b.style.color=
+live
+?'#166534'
+:'#856404';
+
+}
+
+
 function setMarket(id,value,change){
-  const p=document.getElementById(id);if(p)p.textContent=value==null?'—':money(value);
-  const el=document.getElementById(id==='niftyPrice'?'niftyChange':id==='bankPrice'?'bankChange':'vixState');
-  if(el){el.textContent=change||'—';el.className=change&&String(change).startsWith('▼')?'down':'up'}
+
+const p=
+document.getElementById(id);
+
+if(p){
+
+p.textContent=
+value==null
+?'—'
+:money(value);
+
 }
+
+
+let changeId='';
+
+if(id==='niftyPrice'){
+changeId='niftyChange';
+}
+
+else if(id==='bankPrice'){
+changeId='bankChange';
+}
+
+else if(id==='vixPrice'){
+changeId='vixState';
+}
+
+
+const el=
+document.getElementById(changeId);
+
+if(el){
+
+el.textContent=
+change||'—';
+
+el.className=
+change &&
+String(change).startsWith('▼')
+?'down'
+:'up';
+
+}
+
+}
+
+
 async function loadLiveMarket(){
-  try{
-    const r=await fetch('/api/upstox/quote?instrument_key='+encodeURIComponent('NSE_INDEX|Nifty 50,NSE_INDEX|Nifty Bank,NSE_INDEX|India VIX'),{cache:'no-store'});
-    const d=await r.json();
-    if(!r.ok||!d.ok)throw new Error(d.error||'Upstox not connected');
-    const vals=Object.values(d.data||{});
-    const pick=(name)=>vals.find(x=>String(x.instrument_token||'').includes(name));
-    const n=pick('Nifty 50'),b=pick('Nifty Bank'),v=pick('India VIX');
-    const pct=x=>x&&x.cp?((x.last_price/x.cp-1)*100):null;
-    if(n)setMarket('niftyPrice',n.last_price,(pct(n)>=0?'▲ +':'▼ ')+pct(n).toFixed(2)+'%');
-    if(b)setMarket('bankPrice',b.last_price,(pct(b)>=0?'▲ +':'▼ ')+pct(b).toFixed(2)+'%');
-    if(v)setMarket('vixPrice',v.last_price,'LIVE');
-    // GIFT NIFTY will be connected in the live-data phase.
-    setBadge('DATA: UPSTOX • LIVE',true);
-    return true;
-  }catch(e){
-    setBadge('DATA: DEMO • LIVE OFF',false);
-    return false;
-  }
+
+try{
+
+const r=
+await fetch(
+'/api/upstox/quote?instrument_key='+
+encodeURIComponent(
+'NSE_INDEX|Nifty 50,NSE_INDEX|Nifty Bank,NSE_INDEX|India VIX'
+),
+{
+cache:'no-store'
 }
+);
+
+
+const d=
+await r.json();
+
+
+if(
+!r.ok ||
+!d.ok
+){
+
+throw new Error(
+d.error||
+'Upstox not connected'
+);
+
+}
+
+
+const vals=
+Object.values(d.data||{});
+
+
+const pick=(name)=>{
+
+return vals.find(x=>{
+
+const text=
+String(
+x.instrument_token||
+x.instrument_key||
+x.symbol||
+x.name||
+''
+);
+
+return text
+.toLowerCase()
+.includes(name.toLowerCase());
+
+});
+
+};
+
+
+const n=
+pick('Nifty 50');
+
+const b=
+pick('Nifty Bank');
+
+const v=
+pick('India VIX');
+
+
+const pct=(x)=>{
+
+if(
+!x ||
+!x.cp ||
+!x.last_price
+){
+return null;
+}
+
+return(
+x.last_price/x.cp-1
+)*100;
+
+};
+
+
+if(n){
+
+const p=pct(n);
+
+setMarket(
+'niftyPrice',
+n.last_price,
+p==null
+?'LIVE'
+:
+(
+p>=0
+?'▲ +'
+:'▼ '
+)+
+p.toFixed(2)+
+'%'
+);
+
+}
+
+
+if(b){
+
+const p=pct(b);
+
+setMarket(
+'bankPrice',
+b.last_price,
+p==null
+?'LIVE'
+:
+(
+p>=0
+?'▲ +'
+:'▼ '
+)+
+p.toFixed(2)+
+'%'
+);
+
+}
+
+
+if(v){
+
+setMarket(
+'vixPrice',
+v.last_price,
+'LIVE'
+);
+
+}
+
+
+setBadge(
+'DATA: UPSTOX • LIVE',
+true
+);
+
+return true;
+
+}
+
+catch(e){
+
+setBadge(
+'DATA: DEMO • LIVE OFF',
+false
+);
+
+return false;
+
+}
+
+}
+
+
 function renderHomeRows(rows){
-  const sections=document.querySelectorAll('#home .section');
-  const section=sections[0];
-  if(!section)return;
-  section.querySelectorAll('.setup.live-generated').forEach(x=>x.remove());
-  const firstStatic=section.querySelector('.setup:not(.live-generated)');
-  (rows||[]).slice(0,5).forEach(s=>{
-    const el=document.createElement('div');
-    el.className='setup live-generated';
-    el.dataset.mode=(scanMode==='all'?'swing':scanMode);
-    el.dataset.stock=s.symbol;
-    const scoreClass=s.score>=85?'score-green':s.score>=75?'score-yellow':'';
-    const badge=s.signal||'NO TRADE';
-    const sl='₹'+money(s.sl), t1='₹'+money(s.t1);
-    el.innerHTML='<div class="setup-head"><div><div class="stock">'+s.symbol+'</div><div class="setup-type">'+(s.setup||'WAIT')+' • Live Upstox</div></div><div class="score-badge '+scoreClass+'">'+badge+' '+s.score+'/100</div></div><div class="metrics"><div class="metric"><small>LIVE</small><b>₹'+money(s.price)+'</b></div><div class="metric"><small>SL</small><b>'+sl+'</b></div><div class="metric"><small>T1</small><b>'+t1+'</b></div><div class="metric"><small>R:R</small><b>'+s.rr+'</b></div></div><div class="reasons"><div class="reason good">✓ Live Price</div><div class="reason '+(s.volume_ratio&&s.volume_ratio>=1.5?'good':'warn')+'">'+(s.volume_ratio?'✓ Volume '+s.volume_ratio+'x':'◐ Volume')+'</div><div class="reason '+(s.score>=75?'good':'warn')+'">'+(s.score>=75?'✓ Trend':'⚠ Trend')+'</div><div class="reason '+(s.score>=75?'good':'warn')+'">'+(s.score>=75?'✓ Eligible':'⚠ Confirmation')+'</div></div>';
-    el.onclick=()=>openSetup(s.symbol);
-    if(firstStatic) section.insertBefore(el,firstStatic); else section.appendChild(el);
-  });
+
+const section=
+document.querySelector('#home .section');
+
+
+if(!section){
+return;
 }
+
+
+section
+.querySelectorAll('.setup.live-generated')
+.forEach(x=>x.remove());
+
+
+const firstStatic=
+section.querySelector(
+'.setup:not(.live-generated)'
+);
+
+
+(rows||[])
+.slice(0,5)
+.forEach(s=>{
+
+const el=
+document.createElement('div');
+
+
+el.className=
+'setup live-generated';
+
+
+el.dataset.mode=
+(
+s.mode||
+(
+scanMode==='all'
+?'swing'
+:scanMode
+)
+).toLowerCase();
+
+
+el.dataset.stock=
+s.symbol;
+
+
+const score=
+Number(s.score||0);
+
+
+let scoreClass='score-neutral';
+
+if(score>=85){
+scoreClass='score-green';
+}
+else if(score>=75){
+scoreClass='score-yellow';
+}
+
+
+const badge=
+s.signal||
+'NO TRADE';
+
+
+const sl=
+'₹'+money(s.sl);
+
+const t1=
+'₹'+money(s.t1);
+
+
+el.innerHTML=`
+
+<div class="setup-head">
+
+<div>
+
+<div class="stock">
+${escapeHtml(s.symbol)}
+</div>
+
+<div class="setup-type">
+${escapeHtml(s.setup||'WAIT')}
+ • Live Upstox
+</div>
+
+</div>
+
+<div class="score-badge ${scoreClass}">
+${escapeHtml(badge)}
+ ${score}/100
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+<div class="metric">
+<small>LIVE</small>
+<b>₹${money(s.price)}</b>
+</div>
+
+<div class="metric">
+<small>SL</small>
+<b>${sl}</b>
+</div>
+
+<div class="metric">
+<small>T1</small>
+<b>${t1}</b>
+</div>
+
+<div class="metric">
+<small>R:R</small>
+<b>${escapeHtml(s.rr||'—')}</b>
+</div>
+
+</div>
+
+
+<div class="reasons">
+
+<div class="reason good">
+✓ Live Price
+</div>
+
+<div class="reason ${
+s.volume_ratio &&
+s.volume_ratio>=1.5
+?'good'
+:'warn'
+}">
+
+${
+s.volume_ratio
+?'✓ Volume '+escapeHtml(s.volume_ratio)+'x'
+:'◐ Volume'
+}
+
+</div>
+
+
+<div class="reason ${
+score>=75
+?'good'
+:'warn'
+}">
+
+${
+score>=75
+?'✓ Trend'
+:'⚠ Trend'
+}
+
+</div>
+
+
+<div class="reason ${
+score>=75
+?'good'
+:'warn'
+}">
+
+${
+score>=75
+?'✓ Eligible'
+:'⚠ Confirmation'
+}
+
+</div>
+
+</div>
+
+`;
+
+
+el.onclick=()=>{
+
+openSetup(s.symbol);
+
+};
+
+
+if(firstStatic){
+
+section.insertBefore(
+el,
+firstStatic
+);
+
+}
+else{
+
+section.appendChild(el);
+
+}
+
+});
+
+}
+
+
 function renderLiveRows(rows){
-  liveRows=rows||[];liveSetups={};
-  const list=document.getElementById('scannerList');
-  if(!list)return;
-  list.innerHTML='';
-  liveRows.forEach(s=>{
-    liveSetups[s.symbol]={price:'₹'+money(s.price),sl:'₹'+money(s.sl),t1:'₹'+money(s.t1),rr:s.rr,score:s.score+'/100',type:(s.setup||'WAIT')+' • Swing',status:s.reason||'Live Upstox analysis',mode:'Swing'};
-    const el=document.createElement('div');
-    el.className='scanner-card';el.dataset.stock=s.symbol;el.dataset.signal=s.signal||'wait';el.dataset.mode='swing';
-    const scoreClass=s.score>=85?'signal-long':s.score>=75?'signal-watch':'signal-avoid';
-    el.innerHTML='<div class="scanner-top"><div><div class="scanner-symbol">'+s.symbol+'</div><div class="scanner-price">₹'+money(s.price)+' • '+(s.timeframe||scanTF)+' • '+(s.data_source||'Upstox')+'</div></div><div style="text-align:right"><div class="signal '+scoreClass+'">'+(s.signal||'NO TRADE')+' '+s.score+'</div><button class="wa-share" style="border:0;background:#dcfce7;color:#166534;border-radius:8px;padding:5px 7px;font-size:9px;font-weight:800;margin-top:5px" onclick="shareRow(event,'+JSON.stringify(s)+')">WhatsApp</button></div></div><div class="scanner-grid"><div class="scanner-metric"><small>TREND</small><b class="'+(s.score>=75?'pass':'watch')+'">'+(s.setup||'WAIT')+'</b></div><div class="scanner-metric"><small>5M VOL</small><b class="'+(s.volume_ratio>=1.5?'pass':'watch')+'">'+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'</b></div><div class="scanner-metric"><small>R:R</small><b class="'+(s.score>=75?'pass':'watch')+'">'+s.rr+'</b></div><div class="scanner-metric"><small>STATUS</small><b class="'+(s.score>=75?'pass':'fail')+'">'+(s.score>=75?'ELIGIBLE':'WAIT')+'</b></div></div><div class="scan-score"><i style="width:'+s.score+'%"></i></div><div class="scan-note">'+(s.reason||'No clean confirmation')+' • '+(s.data_source||'Upstox')+'</div></div>';
-    el.onclick=(ev)=>{if(ev.target.closest('.wa-share'))return;openSetup(s.symbol)};\n    list.appendChild(el);
-  });
-  searchStocks();
+
+liveRows=
+rows||[];
+
+liveSetups={};
+
+
+const list=
+document.getElementById('scannerList');
+
+
+if(!list){
+return;
 }
-function shareTextForRow(s){return '📊 Smart Money AI Pro\n'+s.symbol+' • '+(s.timeframe||scanTF)+'\nPrice: ₹'+money(s.price)+'\nSignal: '+(s.signal||'NO TRADE')+' • Score '+s.score+'/100\nEntry: ₹'+money(s.entry)+'\nSL: ₹'+money(s.sl)+'\nT1: ₹'+money(s.t1)+'\nT2: ₹'+money(s.t2)+'\nR:R: '+s.rr+'\nVolume: '+(s.volume_ratio==null?'—':s.volume_ratio+'x')+'\nReason: '+(s.reason||'No clean confirmation')+'\n\nFor educational use — verify live market conditions before trading.';}\nfunction shareRow(ev,s){if(ev)ev.stopPropagation();window.open('https://wa.me/?text='+encodeURIComponent(shareTextForRow(s)),'_blank');}\nfunction shareCurrentScan(){const s=liveRows[0];if(s)shareRow(null,s);else window.open('https://wa.me/?text='+encodeURIComponent('📊 Smart Money AI Pro — Live scanner\nOpen the app to view the latest scan.'),'_blank')}\nfunction shareApp(){const text='📊 Smart Money AI Pro — Live Indian market scanner\n'+location.href; if(navigator.share){navigator.share({title:'Smart Money AI Pro',text,url:location.href}).catch(()=>{})}else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}}\nasync function scanLive(){
-  const status=document.getElementById('scannerStatus');
-  const list=document.getElementById('scannerList');
-  const count=document.getElementById('scanCount');
-  const q=document.getElementById('stockSearch').value.trim().toUpperCase();
-  if(status)status.textContent='Scanning '+scanTF+' live candles from Upstox…';
-  if(count)count.textContent='…';
-  if(list)list.innerHTML='<div class="scanner-card"><div class="scan-note">⏳ LIVE SCAN: '+scanTF+' • fetching fresh data…</div></div>';
-  try{
-    const defaultSymbols='RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL,MARUTI,BHARTIARTL';
-    const symbols=q?encodeURIComponent(q):encodeURIComponent(defaultSymbols);
-    const url='/api/screener?tf='+encodeURIComponent(scanTF)+'&symbols='+symbols+'&_='+Date.now();
-    const r=await fetch(url,{cache:'no-store'});
-    const d=await r.json().catch(()=>({}));
-    if(!r.ok||!d.ok)throw new Error(d.error||'Live scanner unavailable');
-    renderLiveRows(d.rows||[]);
-    renderHomeRows(d.rows||[]);
-    if(status)status.textContent='LIVE • Upstox • '+scanTF+' • updated '+new Date(d.updated_at).toLocaleTimeString();
-    if(count)count.textContent=(d.rows||[]).length;
-    setBadge('DATA: UPSTOX • LIVE',true);
-  }catch(e){
-    if(list)list.innerHTML='<div class="scanner-card"><div class="scanner-symbol">LIVE DATA ERROR</div><div class="scan-note">'+(e.message||'Connect Upstox and try again')+'</div></div>';
-    if(status)status.textContent='Live scanner unavailable • '+(e.message||'Connect Upstox');
-    if(count)count.textContent='0';
-    setBadge('DATA: UPSTOX • ERROR',false);
-  }
+
+
+list.innerHTML='';
+
+
+if(!liveRows.length){
+
+list.innerHTML=`
+
+<div class="scanner-card">
+
+<div class="empty-state">
+No matching live setups found.
+</div>
+
+</div>
+
+`;
+
+document.getElementById('scanCount')
+.textContent='0';
+
+return;
+
 }
+
+
+liveRows.forEach(s=>{
+
+liveSetups[s.symbol]={
+
+price:'₹'+money(s.price),
+
+sl:'₹'+money(s.sl),
+
+t1:'₹'+money(s.t1),
+
+rr:s.rr||'—',
+
+score:(s.score||0)+'/100',
+
+type:
+(s.setup||'WAIT')+
+' • '+
+(s.mode||'Live'),
+
+status:
+s.reason||
+'Live Upstox analysis',
+
+mode:
+s.mode||
+'Live'
+
+};
+
+
+const el=
+document.createElement('div');
+
+
+el.className=
+'scanner-card';
+
+
+el.dataset.stock=
+s.symbol;
+
+
+el.dataset.signal=
+s.signal||'wait';
+
+
+el.dataset.mode=
+(s.mode||'swing').toLowerCase();
+
+
+const score=
+Number(s.score||0);
+
+
+let scoreClass=
+'signal-avoid';
+
+if(score>=85){
+scoreClass='signal-long';
+}
+else if(score>=75){
+scoreClass='signal-watch';
+}
+
+
+const shareData=
+JSON.stringify(s)
+.replace(/</g,'\\u003c');
+
+
+el.innerHTML=`
+
+<div class="scanner-top">
+
+<div>
+
+<div class="scanner-symbol">
+${escapeHtml(s.symbol)}
+</div>
+
+<div class="scanner-price">
+
+₹${money(s.price)}
+ •
+${escapeHtml(s.timeframe||scanTF)}
+ •
+${escapeHtml(s.data_source||'Upstox')}
+
+</div>
+
+</div>
+
+
+<div style="text-align:right">
+
+<div class="signal ${scoreClass}">
+
+${escapeHtml(s.signal||'NO TRADE')}
+ ${score}
+
+</div>
+
+
+<button
+class="wa-share"
+style="
+border:0;
+background:#dcfce7;
+color:#166534;
+border-radius:8px;
+padding:5px 7px;
+font-size:9px;
+font-weight:800;
+margin-top:5px
+"
+onclick='shareRow(event,${shareData})'
+>
+WhatsApp
+</button>
+
+</div>
+
+</div>
+
+
+<div class="scanner-grid">
+
+
+<div class="scanner-metric">
+
+<small>TREND</small>
+
+<b class="${
+score>=75
+?'pass'
+:'watch'
+}">
+
+${escapeHtml(s.setup||'WAIT')}
+
+</b>
+
+</div>
+
+
+<div class="scanner-metric">
+
+<small>5M VOL</small>
+
+<b class="${
+s.volume_ratio &&
+s.volume_ratio>=1.5
+?'pass'
+:'watch'
+}">
+
+${
+s.volume_ratio==null
+?'—'
+:escapeHtml(s.volume_ratio)+'x'
+}
+
+</b>
+
+</div>
+
+
+<div class="scanner-metric">
+
+<small>R:R</small>
+
+<b class="${
+score>=75
+?'pass'
+:'watch'
+}">
+
+${escapeHtml(s.rr||'—')}
+
+</b>
+
+</div>
+
+
+<div class="scanner-metric">
+
+<small>STATUS</small>
+
+<b class="${
+score>=75
+?'pass'
+:'fail'
+}">
+
+${
+score>=75
+?'ELIGIBLE'
+:'WAIT'
+}
+
+</b>
+
+</div>
+
+
+</div>
+
+
+<div class="scan-score">
+
+<i style="width:${Math.min(100,Math.max(0,score))}%"></i>
+
+</div>
+
+
+<div class="scan-note">
+
+${escapeHtml(
+s.reason||
+'No clean confirmation'
+)}
+
+ •
+${escapeHtml(
+s.data_source||
+'Upstox'
+)}
+
+</div>
+
+`;
+
+
+el.onclick=(ev)=>{
+
+if(
+ev.target.closest('.wa-share')
+){
+return;
+}
+
+openSetup(s.symbol);
+
+};
+
+
+list.appendChild(el);
+
+});
+
+
+searchStocks();
+
+}
+
+
+function shareTextForRow(s){
+
+return `📊 Smart Money AI Pro
+
+${s.symbol} • ${s.timeframe||scanTF}
+
+Price: ₹${money(s.price)}
+
+Signal: ${s.signal||'NO TRADE'} • Score ${s.score||0}/100
+
+Entry: ₹${money(s.entry)}
+
+SL: ₹${money(s.sl)}
+
+T1: ₹${money(s.t1)}
+
+T2: ₹${money(s.t2)}
+
+R:R: ${s.rr||'—'}
+
+Volume: ${
+s.volume_ratio==null
+?'—'
+:s.volume_ratio+'x'
+}
+
+Reason: ${
+s.reason||
+'No clean confirmation'
+}
+
+For educational use — verify live market conditions before trading.`;
+
+}
+
+
+function shareRow(ev,s){
+
+if(ev){
+ev.stopPropagation();
+}
+
+
+const text=
+shareTextForRow(s);
+
+
+window.open(
+'https://wa.me/?text='+
+encodeURIComponent(text),
+'_blank'
+);
+
+}
+
+
+function shareCurrentScan(){
+
+const s=
+liveRows[0];
+
+
+if(s){
+
+shareRow(null,s);
+
+}
+
+else{
+
+window.open(
+'https://wa.me/?text='+
+encodeURIComponent(
+'📊 Smart Money AI Pro — Live scanner\nOpen the app to view the latest scan.'
+),
+'_blank'
+);
+
+}
+
+}
+
+
+function shareSetup(symbol){
+
+const s=
+liveSetups[symbol]||
+setups[symbol];
+
+
+if(!s){
+return;
+}
+
+
+const text=
+
+`📊 Smart Money AI Pro
+
+${symbol}
+
+Entry: ${s.price}
+
+SL: ${s.sl}
+
+T1: ${s.t1}
+
+R:R: ${s.rr}
+
+Score: ${s.score}
+
+${s.status}
+
+Educational use only. Verify live market conditions before trading.`;
+
+window.open(
+'https://wa.me/?text='+
+encodeURIComponent(text),
+'_blank'
+);
+
+}
+
+
+function shareApp(){
+
+const text=
+'📊 Smart Money AI Pro — Live Indian market scanner\n'+
+location.href;
+
+
+if(
+navigator.share
+){
+
+navigator
+.share({
+title:'Smart Money AI Pro',
+text:text,
+url:location.href
+})
+.catch(()=>{});
+
+}
+
+else{
+
+window.open(
+'https://wa.me/?text='+
+encodeURIComponent(text),
+'_blank'
+);
+
+}
+
+}
+
+
+async function scanLive(){
+
+const status=
+document.getElementById('scannerStatus');
+
+const list=
+document.getElementById('scannerList');
+
+const count=
+document.getElementById('scanCount');
+
+
+const input=
+document.getElementById('stockSearch');
+
+
+const q=
+input
+?input.value.trim().toUpperCase()
+:'';
+
+
+if(status){
+
+status.textContent=
+'Scanning '+
+scanTF+
+' live candles from Upstox…';
+
+}
+
+
+if(count){
+
+count.textContent='…';
+
+}
+
+
+if(list){
+
+list.innerHTML=`
+
+<div class="scanner-card">
+
+<div class="loading">
+
+⏳ LIVE SCAN:
+${escapeHtml(scanTF)}
+ • fetching fresh data…
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+try{
+
+const defaultSymbols=
+'RELIANCE,SBIN,HDFCBANK,ICICIBANK,INFY,TCS,AXISBANK,TATASTEEL,MARUTI,BHARTIARTL';
+
+
+const symbols=
+q
+?encodeURIComponent(q)
+:encodeURIComponent(defaultSymbols);
+
+
+const url=
+'/api/screener?tf='+
+encodeURIComponent(scanTF)+
+'&symbols='+
+symbols+
+'&_='+
+Date.now();
+
+
+const r=
+await fetch(
+url,
+{
+cache:'no-store'
+}
+);
+
+
+const d=
+await r
+.json()
+.catch(()=>({}));
+
+
+if(
+!r.ok ||
+!d.ok
+){
+
+throw new Error(
+d.error||
+'Live scanner unavailable'
+);
+
+}
+
+
+const rows=
+d.rows||[];
+
+
+renderLiveRows(rows);
+
+renderHomeRows(rows);
+
+
+if(status){
+
+const updated=
+d.updated_at
+?new Date(d.updated_at)
+:new Date();
+
+status.textContent=
+'LIVE • Upstox • '+
+scanTF+
+' • updated '+
+updated.toLocaleTimeString();
+
+}
+
+
+if(count){
+
+count.textContent=
+rows.length;
+
+}
+
+
+setBadge(
+'DATA: UPSTOX • LIVE',
+true
+);
+
+}
+
+catch(e){
+
+if(list){
+
+list.innerHTML=`
+
+<div class="scanner-card">
+
+<div class="scanner-symbol">
+LIVE DATA ERROR
+</div>
+
+<div class="scan-note">
+
+${escapeHtml(
+e.message||
+'Connect Upstox and try again'
+)}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+if(status){
+
+status.textContent=
+'Live scanner unavailable • '+
+(
+e.message||
+'Connect Upstox'
+);
+
+}
+
+
+if(count){
+
+count.textContent='0';
+
+}
+
+
+setBadge(
+'DATA: UPSTOX • ERROR',
+false
+);
+
+}
+
+}
+
+
+/* START APP */
+
 (function(){
-  const p=new URLSearchParams(location.search);
-  if(p.get('upstox')==='connected'){
-    localStorage.setItem('sb_provider','Upstox');
-    history.replaceState({},'',location.pathname);
-  }
-  loadLiveMarket();
-  scanLive();
-  setInterval(loadLiveMarket,60000);
-})(); 
-function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('show')}
-</script>
-<script>
-(function(){
-  const p=new URLSearchParams(location.search);
-  if(p.get('upstox')==='connected'){
-    localStorage.setItem('sb_provider','Upstox');
-    const b=document.querySelector('.demo');
-    if(b)b.textContent='DATA: UPSTOX • LIVE';
-    alert('Upstox connected successfully. Live quote gateway is ready.');
-    history.replaceState({},'',location.pathname);
-  }
+
+const p=
+new URLSearchParams(
+location.search
+);
+
+
+if(
+p.get('upstox')==='connected'
+){
+
+localStorage.setItem(
+'sb_provider',
+'Upstox'
+);
+
+
+const b=
+document.querySelector('.demo');
+
+
+if(b){
+
+b.textContent=
+'DATA: UPSTOX • LIVE';
+
+}
+
+
+history.replaceState(
+{},
+'',
+location.pathname
+);
+
+}
+
+
+loadLiveMarket();
+
+scanLive();
+
+
+setInterval(
+loadLiveMarket,
+60000
+);
+
 })();
-</script></body>
-</html>
+
+</script>
+
+</body>
+  </html>
